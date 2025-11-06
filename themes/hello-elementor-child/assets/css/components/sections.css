@@ -1,0 +1,373 @@
+/**
+ * SECTIONS.CSS
+ * 
+ * Pastel section band utilities for content organization.
+ * Uses C1 Dual-Accent surface tokens (mint, coral, lavender, sage, cream).
+ * All text remains neutral (#1E293B) for WCAG AA compliance.
+ * 
+ * Version: 1.0.0
+ * Dependencies: tokens.css (v1.3.0+)
+ * Safe Areas: Respects CookieYes banner and Compare FAB
+ */
+
+/* ========================================
+   PASTEL SECTION BANDS
+   ======================================== */
+
+/**
+ * Base Section
+ * Very light padding, neutral headings, pastel backgrounds
+ */
+.section--pastel {
+	padding: var(--spacing-8) var(--spacing-6);
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.section--pastel {
+		padding: var(--spacing-12) var(--spacing-8);
+	}
+}
+
+@media (min-width: 1024px) {
+	.section--pastel {
+		padding: var(--spacing-16) var(--spacing-12);
+	}
+}
+
+/* ========================================
+   PASTEL VARIANTS
+   ======================================== */
+
+/* Mint Section - Fresh, clean feeling */
+.section--pastel-mint {
+	background-color: var(--color-accent-surface-mint); /* #c9e5ea */
+	color: var(--color-text-primary); /* #1E293B - AA compliant */
+	padding: var(--spacing-8) var(--spacing-6);
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.section--pastel-mint {
+		padding: var(--spacing-12) var(--spacing-8);
+	}
+}
+
+@media (min-width: 1024px) {
+	.section--pastel-mint {
+		padding: var(--spacing-16) var(--spacing-12);
+	}
+}
+
+/* Coral Section - Warm, inviting feeling */
+.section--pastel-coral {
+	background-color: var(--color-accent-surface-coral); /* #f2ddda */
+	color: var(--color-text-primary); /* #1E293B - AA compliant */
+	padding: var(--spacing-8) var(--spacing-6);
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.section--pastel-coral {
+		padding: var(--spacing-12) var(--spacing-8);
+	}
+}
+
+@media (min-width: 1024px) {
+	.section--pastel-coral {
+		padding: var(--spacing-16) var(--spacing-12);
+	}
+}
+
+/* Lavender Section - Calm, sophisticated feeling */
+.section--pastel-lavender {
+	background-color: var(--color-accent-surface-lavender); /* #cec7ee */
+	color: var(--color-text-primary); /* #1E293B - AA compliant */
+	padding: var(--spacing-8) var(--spacing-6);
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.section--pastel-lavender {
+		padding: var(--spacing-12) var(--spacing-8);
+	}
+}
+
+@media (min-width: 1024px) {
+	.section--pastel-lavender {
+		padding: var(--spacing-16) var(--spacing-12);
+	}
+}
+
+/* Sage Section - Natural, grounded feeling */
+.section--pastel-sage {
+	background-color: var(--color-accent-surface-sage); /* #d9e8db */
+	color: var(--color-text-primary); /* #1E293B - AA compliant */
+	padding: var(--spacing-8) var(--spacing-6);
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.section--pastel-sage {
+		padding: var(--spacing-12) var(--spacing-8);
+	}
+}
+
+@media (min-width: 1024px) {
+	.section--pastel-sage {
+		padding: var(--spacing-16) var(--spacing-12);
+	}
+}
+
+/* Cream Section - Soft, friendly feeling */
+.section--pastel-cream {
+	background-color: var(--color-accent-surface-cream); /* #f6e7c8 */
+	color: var(--color-text-primary); /* #1E293B - AA compliant */
+	padding: var(--spacing-8) var(--spacing-6);
+	margin: 0;
+}
+
+@media (min-width: 640px) {
+	.section--pastel-cream {
+		padding: var(--spacing-12) var(--spacing-8);
+	}
+}
+
+@media (min-width: 1024px) {
+	.section--pastel-cream {
+		padding: var(--spacing-16) var(--spacing-12);
+	}
+}
+
+/* ========================================
+   SECTION INNER CONTAINER
+   ======================================== */
+
+/**
+ * Optional max-width container within section
+ * Keeps content readable on wide screens
+ */
+.section__container {
+	max-width: var(--container-max-width); /* 1280px */
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+}
+
+/* ========================================
+   SECTION HEADINGS
+   ======================================== */
+
+/**
+ * Neutral headings for AA contrast on pastel backgrounds
+ * All text remains #1E293B (C1 Neutral Ink primary)
+ */
+.section--pastel h1,
+.section--pastel h2,
+.section--pastel h3,
+.section--pastel h4,
+.section--pastel h5,
+.section--pastel h6,
+.section--pastel-mint h1,
+.section--pastel-mint h2,
+.section--pastel-mint h3,
+.section--pastel-mint h4,
+.section--pastel-mint h5,
+.section--pastel-mint h6,
+.section--pastel-coral h1,
+.section--pastel-coral h2,
+.section--pastel-coral h3,
+.section--pastel-coral h4,
+.section--pastel-coral h5,
+.section--pastel-coral h6,
+.section--pastel-lavender h1,
+.section--pastel-lavender h2,
+.section--pastel-lavender h3,
+.section--pastel-lavender h4,
+.section--pastel-lavender h5,
+.section--pastel-lavender h6,
+.section--pastel-sage h1,
+.section--pastel-sage h2,
+.section--pastel-sage h3,
+.section--pastel-sage h4,
+.section--pastel-sage h5,
+.section--pastel-sage h6,
+.section--pastel-cream h1,
+.section--pastel-cream h2,
+.section--pastel-cream h3,
+.section--pastel-cream h4,
+.section--pastel-cream h5,
+.section--pastel-cream h6 {
+	color: var(--color-text-primary); /* #1E293B - AA compliant */
+}
+
+/* ========================================
+   SECTION TEXT ELEMENTS
+   ======================================== */
+
+/**
+ * Secondary and tertiary text
+ * Maintains C1 neutral hierarchy
+ */
+.section--pastel p,
+.section--pastel-mint p,
+.section--pastel-coral p,
+.section--pastel-lavender p,
+.section--pastel-sage p,
+.section--pastel-cream p {
+	color: var(--color-text-primary);
+}
+
+.section--pastel .text-secondary,
+.section--pastel-mint .text-secondary,
+.section--pastel-coral .text-secondary,
+.section--pastel-lavender .text-secondary,
+.section--pastel-sage .text-secondary,
+.section--pastel-cream .text-secondary {
+	color: var(--color-text-secondary); /* #475569 */
+}
+
+.section--pastel .text-tertiary,
+.section--pastel-mint .text-tertiary,
+.section--pastel-coral .text-tertiary,
+.section--pastel-lavender .text-tertiary,
+.section--pastel-sage .text-tertiary,
+.section--pastel-cream .text-tertiary {
+	color: var(--color-text-tertiary); /* #64748B */
+}
+
+/* ========================================
+   SECTION LINKS
+   ======================================== */
+
+/**
+ * Links within pastel sections
+ * Use neutral ink (#1E293B) for AA compliance
+ * Underlined by default for accessibility
+ */
+.section--pastel a,
+.section--pastel-mint a,
+.section--pastel-coral a,
+.section--pastel-lavender a,
+.section--pastel-sage a,
+.section--pastel-cream a {
+	color: var(--color-text-link); /* #1E293B */
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+	transition: color var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.section--pastel a:hover,
+.section--pastel-mint a:hover,
+.section--pastel-coral a:hover,
+.section--pastel-lavender a:hover,
+.section--pastel-sage a:hover,
+.section--pastel-cream a:hover {
+	color: var(--color-text-link-hover); /* #475569 */
+}
+
+/* ========================================
+   USAGE EXAMPLES (HTML)
+   ======================================== */
+
+/**
+ * Example 1: Mint Section (Fresh Products)
+ * 
+ * <section class="section--pastel-mint">
+ *   <div class="section__container">
+ *     <h2>Productos Frescos</h2>
+ *     <p>Descubre nuestra selección de refrigeradores.</p>
+ *   </div>
+ * </section>
+ * 
+ * 
+ * Example 2: Coral Section (Featured Deals)
+ * 
+ * <section class="section--pastel-coral">
+ *   <div class="section__container">
+ *     <h2>Ofertas Destacadas</h2>
+ *     <p>Las mejores ofertas del mes.</p>
+ *   </div>
+ * </section>
+ * 
+ * 
+ * Example 3: Lavender Section (Categories)
+ * 
+ * <section class="section--pastel-lavender">
+ *   <div class="section__container">
+ *     <h2>Categorías</h2>
+ *     <p>Explora nuestra amplia gama de productos.</p>
+ *   </div>
+ * </section>
+ * 
+ * 
+ * Example 4: Sage Section (Eco-Friendly)
+ * 
+ * <section class="section--pastel-sage">
+ *   <div class="section__container">
+ *     <h2>Productos Ecológicos</h2>
+ *     <p>Cuida el planeta con tecnología eficiente.</p>
+ *   </div>
+ * </section>
+ * 
+ * 
+ * Example 5: Cream Section (Customer Support)
+ * 
+ * <section class="section--pastel-cream">
+ *   <div class="section__container">
+ *     <h2>Soporte al Cliente</h2>
+ *     <p>Estamos aquí para ayudarte.</p>
+ *   </div>
+ * </section>
+ */
+
+/* ========================================
+   SAFE AREA ADJUSTMENTS
+   ======================================== */
+
+/**
+ * Ensure sections don't overlap with:
+ * 1. CookieYes banner (z-index: 999999, bottom)
+ * 2. Compare FAB (z-index: 900, bottom-right)
+ */
+
+/* Mobile: Add bottom padding for CookieYes */
+@media (max-width: 640px) {
+	.section--pastel:last-child,
+	.section--pastel-mint:last-child,
+	.section--pastel-coral:last-child,
+	.section--pastel-lavender:last-child,
+	.section--pastel-sage:last-child,
+	.section--pastel-cream:last-child {
+		padding-bottom: calc(var(--spacing-8) + 80px);
+	}
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/**
+ * High contrast mode support
+ * Ensures sections remain usable in forced-colors mode
+ */
+@media (forced-colors: active) {
+	.section--pastel,
+	.section--pastel-mint,
+	.section--pastel-coral,
+	.section--pastel-lavender,
+	.section--pastel-sage,
+	.section--pastel-cream {
+		border: 1px solid ButtonBorder;
+	}
+}
+
+/**
+ * Reduced motion
+ * Sections have no animations by default
+ * This is a placeholder for future enhancements
+ */
+@media (prefers-reduced-motion: reduce) {
+	/* No animations to disable - sections are static */
+}

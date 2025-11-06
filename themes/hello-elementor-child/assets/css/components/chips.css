@@ -1,0 +1,1002 @@
+/**
+ * Chip Components (Selector & Filter Chips)
+ * casAhorro Design System - Phase 2 + C1 Specification
+ * 
+ * Two types:
+ * 1. Selector Chips: Single/multi-select options (categories, brands)
+ * 2. Active Filter Chips: Removable applied filters
+ * 
+ * C1 Selected State (Pastel-First UI):
+ * - Background: var(--color-accent-surface-sage) #d9e8db
+ * - Text: var(--color-text-primary) #1E293B (AA contrast)
+ * - Border: transparent or same pastel
+ * - Font-weight: 600 (semibold)
+ * 
+ * Unified Styling:
+ * - Custom chips (.cas-chips, .chip--selector)
+ * - WooCommerce widgets (.widget_layered_nav_filters, .widget_product_categories)
+ * - Elementor term chips (.term-chip, .product-cats)
+ * 
+ * All selected states use consistent pastel + neutral ink.
+ * Hover/active for selected: slight ink darken only (no saturated colors).
+ * Unselected: white bg, neutral borders, subtle hover shadow.
+ * 
+ * Focus ring via --a11y-focus-ring-* tokens (WCAG AA).
+ * Min touch target: 44×44px (height).
+ * Transform/opacity animations only; respects prefers-reduced-motion.
+ * 
+ * Sample UI copy (es-CL):
+ * - SR labels: "Seleccionar: {nombre}", "Quitar filtro: {nombre}"
+ * - Example chips: "Refrigeradores", "Samsung", "Precio: $100.000 - $500.000"
+ * 
+ * No analytics.
+ */
+
+/* ========================================
+   BASE CHIP
+   ======================================== */
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-2);
+	
+	/* Sizing - 12-16px padding scale */
+	min-height: var(--a11y-min-tap-target);
+	padding: var(--spacing-3) var(--spacing-4); /* 12px 16px */
+	
+	/* Typography */
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-small);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--line-height-small);
+	text-decoration: none;
+	white-space: nowrap;
+	
+	/* Appearance */
+	background-color: var(--color-surface-background);
+	color: var(--color-text-secondary);
+	border: 1px solid var(--color-border-default);
+	border-radius: var(--radius-lg); /* 16px from tokens */
+	cursor: pointer;
+	user-select: none;
+	
+	/* Transitions */
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		border-color var(--motion-duration-fast) var(--motion-easing-default),
+		color var(--motion-duration-fast) var(--motion-easing-default),
+		box-shadow var(--motion-duration-fast) var(--motion-easing-default),
+		transform var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.chip:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	box-shadow: none !important;
+}
+
+/* Hover: slight opacity change - INTERACTION PATTERN */
+.chip:hover:not(:disabled):not(.chip--disabled) {
+	opacity: 0.92 !important; /* −8% opacity */
+	background-color: var(--color-surface-background-alt, #F8FAFC);
+	border-color: var(--color-border-medium, #CBD5E1);
+}
+
+.chip:active:not(:disabled):not(.chip--disabled) {
+	background-color: var(--color-gray-100);
+	transform: scale(0.98);
+}
+
+/* ========================================
+   SELECTOR CHIPS (Single/Multi-Select)
+   ======================================== */
+
+/**
+ * Used for category/brand selection in filters
+ * Example: "Refrigeradores", "Samsung", "LG"
+ * Requires aria-label: "Seleccionar: {nombre}"
+ * 
+ * Token alignment:
+ * - Padding: 12-16px scale (--spacing-3/--spacing-4)
+ * - Radius: lg (16px)
+ * - Border: var(--color-border-default)
+ * - Selected: dark neutral fill with white text
+ * - Hover/pressed: neutral steps
+ */
+.chip--selector {
+	background-color: var(--color-surface-background);
+	color: var(--color-text-primary);
+	border-color: var(--color-border-default);
+	padding: var(--spacing-3) var(--spacing-4); /* 12px 16px */
+	border-radius: var(--radius-lg); /* 16px */
+}
+
+/* Hover: slight opacity change - INTERACTION PATTERN */
+.chip--selector:hover:not(:disabled):not(.chip--disabled) {
+	opacity: 0.92 !important; /* −8% opacity */
+	background-color: var(--color-surface-background-alt, #F8FAFC);
+	border-color: var(--color-border-medium, #CBD5E1);
+	color: var(--color-text-primary, #1E293B);
+}
+
+.chip--selector:active:not(:disabled):not(.chip--disabled) {
+	background-color: var(--color-gray-100);
+}
+
+/* Selected State - Pastel-First UI (Sage surface with neutral text) */
+.chip--selector[aria-pressed="true"],
+.chip--selector.chip--selected,
+.cas-chips .chip.is-selected,
+.cas-chips .chip[aria-pressed="true"],
+.term-chip.is-active,
+.term-chip[aria-pressed="true"] {
+	background-color: var(--color-accent-surface-sage); /* Sage pastel #d9e8db */
+	color: var(--color-text-primary); /* Neutral text #1E293B for AA contrast */
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold); /* 600 */
+}
+
+/* Selected + Hover: slightly darker pastel, NO saturated fill - INTERACTION PATTERN */
+.chip--selector[aria-pressed="true"]:hover:not(:disabled),
+.chip--selector.chip--selected:hover:not(:disabled),
+.cas-chips .chip.is-selected:hover:not(:disabled),
+.cas-chips .chip[aria-pressed="true"]:hover:not(:disabled),
+.term-chip.is-active:hover:not(:disabled),
+.term-chip[aria-pressed="true"]:hover:not(:disabled) {
+	background-color: #c9dfd0 !important; /* Slightly darker sage */
+	border-color: var(--color-border-medium, #CBD5E1) !important;
+	color: var(--color-text-secondary, #475569) !important; /* Maintain ink-700 */
+	opacity: 1 !important; /* Full opacity for selected state */
+}
+
+.chip--selector[aria-pressed="true"]:active:not(:disabled),
+.chip--selector.chip--selected:active:not(:disabled),
+.cas-chips .chip.is-selected:active:not(:disabled),
+.cas-chips .chip[aria-pressed="true"]:active:not(:disabled),
+.term-chip.is-active:active:not(:disabled),
+.term-chip[aria-pressed="true"]:active:not(:disabled) {
+	background-color: var(--color-accent-surface-sage); /* Return to sage on press */
+	transform: scale(0.98);
+}
+
+/* ========================================
+   ACTIVE FILTER CHIPS (Removable)
+   ======================================== */
+
+/**
+ * Display applied filters with remove button
+ * Example: "Precio: $100.000 - $500.000 [×]"
+ * Remove button requires aria-label: "Quitar filtro: {nombre}"
+ */
+.chip--filter {
+	background-color: var(--color-accent-mint);
+	color: var(--color-text-primary);
+	border-color: transparent;
+	padding: var(--spacing-2) var(--spacing-2) var(--spacing-2) var(--spacing-4);
+	border-radius: var(--radius-lg);
+}
+
+.chip--filter:hover:not(:disabled) {
+	background-color: #b3d9de;
+}
+
+.chip--filter:active:not(:disabled) {
+	background-color: #a3ced3;
+}
+
+/* Filter Chip Label */
+.chip__label {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-1);
+}
+
+/* Filter Chip Remove Button */
+.chip__remove {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 28px;
+	min-height: 28px;
+	padding: 0;
+	margin-left: var(--spacing-2);
+	background-color: transparent;
+	color: currentColor;
+	border: none;
+	border-radius: var(--radius-full);
+	cursor: pointer;
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		transform var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.chip__remove:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.chip__remove:active {
+	transform: scale(0.9);
+}
+
+.chip__remove:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring);
+}
+
+/* Remove Icon (×) */
+.chip__remove-icon {
+	width: 16px;
+	height: 16px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	line-height: 1;
+	font-weight: var(--font-weight-bold);
+}
+
+/* ========================================
+   CHIP VARIANTS BY CONTEXT
+   ======================================== */
+
+/* Category Chips */
+.chip--category {
+	background-color: var(--color-accent-lavender);
+	color: var(--color-text-primary);
+	border-color: transparent;
+	border-radius: var(--radius-lg);
+}
+
+.chip--category:hover:not(:disabled) {
+	background-color: #beb8e5;
+}
+
+.chip--category:active:not(:disabled) {
+	background-color: #aea7dc;
+}
+
+/* Brand Chips */
+.chip--brand {
+	background-color: var(--color-accent-sage);
+	color: var(--color-text-primary);
+	border-color: transparent;
+	border-radius: var(--radius-lg);
+}
+
+.chip--brand:hover:not(:disabled) {
+	background-color: #c9dfd0;
+}
+
+.chip--brand:active:not(:disabled) {
+	background-color: #b9d5c0;
+}
+
+/* Price Range Chips */
+.chip--price {
+	background-color: var(--color-accent-cream);
+	color: var(--color-text-primary);
+	border-color: transparent;
+	border-radius: var(--radius-lg);
+}
+
+.chip--price:hover:not(:disabled) {
+	background-color: #eedeb3;
+}
+
+.chip--price:active:not(:disabled) {
+	background-color: #e6d4a3;
+}
+
+/* Stock Status Chip */
+.chip--stock {
+	background-color: var(--color-success-surface);
+	color: var(--color-text-primary);
+	border-color: var(--color-border-medium);
+	border-radius: var(--radius-lg);
+}
+
+.chip--stock:hover:not(:disabled) {
+	background-color: #c9dfd0;
+}
+
+/* ========================================
+   CHIP SIZES
+   ======================================== */
+
+.chip--sm {
+	min-height: 32px;
+	padding: var(--spacing-1) var(--spacing-3); /* 4px 12px */
+	font-size: var(--font-size-micro);
+	border-radius: var(--radius-md);
+}
+
+.chip--md {
+	min-height: var(--a11y-min-tap-target);
+	padding: var(--spacing-3) var(--spacing-4); /* 12px 16px */
+	font-size: var(--font-size-small);
+	border-radius: var(--radius-lg);
+}
+
+.chip--lg {
+	min-height: 48px;
+	padding: var(--spacing-4) var(--spacing-6); /* 16px 24px */
+	font-size: var(--font-size-body);
+	border-radius: var(--radius-xl);
+}
+
+/* ========================================
+   CHIP STATES
+   ======================================== */
+
+/* Disabled State */
+.chip:disabled,
+.chip.chip--disabled,
+.chip[aria-disabled="true"] {
+	opacity: 0.5;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+/* Loading State */
+.chip--loading {
+	position: relative;
+	color: transparent;
+	pointer-events: none;
+}
+
+.chip--loading::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 16px;
+	height: 16px;
+	margin: -8px 0 0 -8px;
+	border: 2px solid currentColor;
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: chip-spin 0.8s linear infinite;
+}
+
+@keyframes chip-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* ========================================
+   CHIP GROUPS
+   ======================================== */
+
+.chip-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-2);
+	align-items: center;
+}
+
+.chip-group--compact {
+	gap: var(--spacing-1);
+}
+
+/* Chip Group with Label */
+.chip-group__label {
+	font-size: var(--font-size-small);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-secondary);
+	margin-right: var(--spacing-2);
+}
+
+/* ========================================
+   CHIP COUNT BADGE
+   ======================================== */
+
+/**
+ * Show count of selected items
+ * Example: "Refrigeradores (3)"
+ */
+.chip__count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 20px;
+	height: 20px;
+	padding: 0 var(--spacing-1);
+	margin-left: var(--spacing-1);
+	background-color: rgba(0, 0, 0, 0.1);
+	color: inherit;
+	border-radius: var(--radius-full);
+	font-size: var(--font-size-micro);
+	font-weight: var(--font-weight-bold);
+	line-height: 1;
+}
+
+.chip--selected .chip__count {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   CHIP ICON
+   ======================================== */
+
+.chip__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+}
+
+.chip__icon svg {
+	width: 100%;
+	height: 100%;
+	fill: currentColor;
+}
+
+/* ========================================
+   ACCESSIBILITY HELPERS
+   ======================================== */
+
+/* Screen Reader Only Text */
+.chip__sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ========================================
+   COMMON PATTERNS
+   ======================================== */
+
+/* Active Filters Summary */
+.active-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-2);
+	align-items: center;
+	padding: var(--spacing-3) 0;
+}
+
+.active-filters__label {
+	font-size: var(--font-size-small);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-secondary);
+}
+
+.active-filters__count {
+	font-weight: var(--font-weight-regular);
+}
+
+.active-filters__clear {
+	margin-left: auto;
+	font-size: var(--font-size-small);
+	color: var(--color-text-link);
+	text-decoration: underline;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: var(--spacing-2);
+	min-height: var(--a11y-min-tap-target);
+}
+
+.active-filters__clear:hover {
+	color: var(--color-text-link-hover);
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.chip,
+	.chip__remove {
+		transition: none !important;
+		animation: none !important;
+	}
+	
+	.chip:active,
+	.chip__remove:active {
+		transform: none !important;
+	}
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (forced-colors: active) {
+	.chip {
+		border: 2px solid ButtonBorder;
+	}
+	
+	.chip--selected,
+	.chip[aria-pressed="true"] {
+		background-color: Highlight;
+		color: HighlightText;
+		border-color: Highlight;
+	}
+	
+	.chip:focus-visible {
+		outline: 2px solid Highlight;
+	}
+}
+
+/* ========================================
+   WOOCOMMERCE & ELEMENTOR WIDGET OVERRIDES
+   ======================================== */
+
+/**
+ * Apply C1 selected-state styling to WooCommerce and Elementor category widgets.
+ * 
+ * Targets:
+ * - WooCommerce layered nav filters (active filters)
+ * - WooCommerce product categories (current category)
+ * - Elementor product category widgets
+ * 
+ * Specificity: Increased to override theme defaults without !important.
+ * Only use !important if widget injects inline styles.
+ */
+
+/* WooCommerce Layered Nav Filters - Active/Selected Filters */
+.woocommerce .widget_layered_nav_filters .chosen a,
+.woocommerce-page .widget_layered_nav_filters .chosen a {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-2);
+	min-height: var(--a11y-min-tap-target);
+	padding: var(--spacing-3) var(--spacing-4);
+	
+	background-color: var(--color-accent-surface-sage);
+	color: var(--color-text-primary);
+	border: 1px solid transparent;
+	border-radius: var(--radius-lg);
+	
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-small);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-small);
+	text-decoration: none;
+	
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		color var(--motion-duration-fast) var(--motion-easing-default),
+		box-shadow var(--motion-duration-fast) var(--motion-easing-default),
+		transform var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.woocommerce .widget_layered_nav_filters .chosen a:hover,
+.woocommerce-page .widget_layered_nav_filters .chosen a:hover {
+	background-color: #c9dfd0;
+	color: var(--color-text-primary);
+	box-shadow: var(--shadow-card);
+}
+
+.woocommerce .widget_layered_nav_filters .chosen a:active,
+.woocommerce-page .widget_layered_nav_filters .chosen a:active {
+	background-color: var(--color-accent-surface-sage);
+	transform: scale(0.98);
+}
+
+.woocommerce .widget_layered_nav_filters .chosen a:focus-visible,
+.woocommerce-page .widget_layered_nav_filters .chosen a:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring), var(--a11y-focus-ring-outer-shadow);
+}
+
+/* WooCommerce Product Categories - Current Category */
+.woocommerce .widget_product_categories .current-cat > a,
+.woocommerce .widget_product_categories .current-cat-parent > a,
+.woocommerce .widget_product_categories .cat-item.current-cat > a,
+.woocommerce .widget_product_categories .cat-item.current-cat-parent > a,
+.woocommerce-page .widget_product_categories .current-cat > a,
+.woocommerce-page .widget_product_categories .current-cat-parent > a,
+.woocommerce-page .widget_product_categories .cat-item.current-cat > a,
+.woocommerce-page .widget_product_categories .cat-item.current-cat-parent > a {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--a11y-min-tap-target);
+	padding: var(--spacing-2) var(--spacing-4);
+	
+	background-color: var(--color-accent-surface-sage);
+	color: var(--color-text-primary);
+	border-radius: var(--radius-lg);
+	
+	font-weight: var(--font-weight-semibold);
+	text-decoration: none;
+	
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		color var(--motion-duration-fast) var(--motion-easing-default),
+		box-shadow var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.woocommerce .widget_product_categories .current-cat > a:hover,
+.woocommerce .widget_product_categories .current-cat-parent > a:hover,
+.woocommerce .widget_product_categories .cat-item.current-cat > a:hover,
+.woocommerce .widget_product_categories .cat-item.current-cat-parent > a:hover,
+.woocommerce-page .widget_product_categories .current-cat > a:hover,
+.woocommerce-page .widget_product_categories .current-cat-parent > a:hover,
+.woocommerce-page .widget_product_categories .cat-item.current-cat > a:hover,
+.woocommerce-page .widget_product_categories .cat-item.current-cat-parent > a:hover {
+	background-color: #c9dfd0;
+	color: var(--color-text-primary);
+	box-shadow: var(--shadow-card);
+}
+
+.woocommerce .widget_product_categories .current-cat > a:focus-visible,
+.woocommerce .widget_product_categories .current-cat-parent > a:focus-visible,
+.woocommerce .widget_product_categories .cat-item.current-cat > a:focus-visible,
+.woocommerce .widget_product_categories .cat-item.current-cat-parent > a:focus-visible,
+.woocommerce-page .widget_product_categories .current-cat > a:focus-visible,
+.woocommerce-page .widget_product_categories .current-cat-parent > a:focus-visible,
+.woocommerce-page .widget_product_categories .cat-item.current-cat > a:focus-visible,
+.woocommerce-page .widget_product_categories .cat-item.current-cat-parent > a:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring), var(--a11y-focus-ring-outer-shadow);
+}
+
+/* Elementor Product Categories - Current Category */
+.product-cats .current-cat > a,
+.product-cats li.current-cat > a,
+ul.product-cats li.current-cat > a,
+.elementor-widget-product-categories .current-cat > a,
+.elementor-widget-product-categories li.current-cat > a {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--a11y-min-tap-target);
+	padding: var(--spacing-2) var(--spacing-4);
+	
+	background-color: var(--color-accent-surface-sage);
+	color: var(--color-text-primary);
+	border-radius: var(--radius-lg);
+	
+	font-weight: var(--font-weight-semibold);
+	text-decoration: none;
+	
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		color var(--motion-duration-fast) var(--motion-easing-default),
+		box-shadow var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.product-cats .current-cat > a:hover,
+.product-cats li.current-cat > a:hover,
+ul.product-cats li.current-cat > a:hover,
+.elementor-widget-product-categories .current-cat > a:hover,
+.elementor-widget-product-categories li.current-cat > a:hover {
+	background-color: #c9dfd0;
+	color: var(--color-text-primary);
+	box-shadow: var(--shadow-card);
+}
+
+.product-cats .current-cat > a:focus-visible,
+.product-cats li.current-cat > a:focus-visible,
+ul.product-cats li.current-cat > a:focus-visible,
+.elementor-widget-product-categories .current-cat > a:focus-visible,
+.elementor-widget-product-categories li.current-cat > a:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring), var(--a11y-focus-ring-outer-shadow);
+}
+
+/* ========================================
+   UNSELECTED WIDGET CATEGORIES (Neutral Baseline)
+   ======================================== */
+
+/**
+ * Ensure unselected categories have white bg, neutral borders, subtle hover.
+ * Overrides theme defaults with consistent C1 styling.
+ */
+
+/* WooCommerce Product Categories - Unselected */
+.woocommerce .widget_product_categories li:not(.current-cat):not(.current-cat-parent) > a,
+.woocommerce .widget_product_categories .cat-item:not(.current-cat):not(.current-cat-parent) > a,
+.woocommerce-page .widget_product_categories li:not(.current-cat):not(.current-cat-parent) > a,
+.woocommerce-page .widget_product_categories .cat-item:not(.current-cat):not(.current-cat-parent) > a {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--a11y-min-tap-target);
+	padding: var(--spacing-2) var(--spacing-4);
+	
+	background-color: var(--color-surface-background);
+	color: var(--color-text-primary);
+	border: 1px solid var(--color-border-default);
+	border-radius: var(--radius-lg);
+	
+	font-weight: var(--font-weight-medium);
+	text-decoration: none;
+	
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		border-color var(--motion-duration-fast) var(--motion-easing-default),
+		box-shadow var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.woocommerce .widget_product_categories li:not(.current-cat):not(.current-cat-parent) > a:hover,
+.woocommerce .widget_product_categories .cat-item:not(.current-cat):not(.current-cat-parent) > a:hover,
+.woocommerce-page .widget_product_categories li:not(.current-cat):not(.current-cat-parent) > a:hover,
+.woocommerce-page .widget_product_categories .cat-item:not(.current-cat):not(.current-cat-parent) > a:hover {
+	background-color: var(--color-surface-background-alt);
+	border-color: var(--color-border-medium);
+	box-shadow: var(--shadow-card);
+}
+
+.woocommerce .widget_product_categories li:not(.current-cat):not(.current-cat-parent) > a:focus-visible,
+.woocommerce .widget_product_categories .cat-item:not(.current-cat):not(.current-cat-parent) > a:focus-visible,
+.woocommerce-page .widget_product_categories li:not(.current-cat):not(.current-cat-parent) > a:focus-visible,
+.woocommerce-page .widget_product_categories .cat-item:not(.current-cat):not(.current-cat-parent) > a:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring), var(--a11y-focus-ring-outer-shadow);
+}
+
+/* Elementor Product Categories - Unselected */
+.product-cats li:not(.current-cat) > a,
+.elementor-widget-product-categories li:not(.current-cat) > a {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--a11y-min-tap-target);
+	padding: var(--spacing-2) var(--spacing-4);
+	
+	background-color: var(--color-surface-background);
+	color: var(--color-text-primary);
+	border: 1px solid var(--color-border-default);
+	border-radius: var(--radius-lg);
+	
+	font-weight: var(--font-weight-medium);
+	text-decoration: none;
+	
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		border-color var(--motion-duration-fast) var(--motion-easing-default),
+		box-shadow var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.product-cats li:not(.current-cat) > a:hover,
+.elementor-widget-product-categories li:not(.current-cat) > a:hover {
+	background-color: var(--color-surface-background-alt);
+	border-color: var(--color-border-medium);
+	box-shadow: var(--shadow-card);
+}
+
+.product-cats li:not(.current-cat) > a:focus-visible,
+.elementor-widget-product-categories li:not(.current-cat) > a:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring), var(--a11y-focus-ring-outer-shadow);
+}
+
+/* ========================================
+   WIDGET OVERRIDES: REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.woocommerce .widget_layered_nav_filters .chosen a,
+	.woocommerce .widget_product_categories a,
+	.product-cats a,
+	.elementor-widget-product-categories a {
+		transition: none !important;
+	}
+	
+	.woocommerce .widget_layered_nav_filters .chosen a:active,
+	.woocommerce .widget_product_categories a:active,
+	.product-cats a:active,
+	.elementor-widget-product-categories a:active {
+		transform: none !important;
+	}
+}
+
+/* ========================================
+   SELECTED STATE OVERRIDE (Phase-2 C1)
+   ======================================== */
+
+/**
+ * FINAL SPECIFICITY LAYER - C1 PASTEL SELECTED STATE
+ * 
+ * This block ensures all selected/active chip and category states
+ * consistently use sage pastel surface + neutral text across:
+ * - Custom chips (.cas-chips, .chip--selector)
+ * - WooCommerce widgets (.widget_layered_nav_filters, .widget_product_categories)
+ * - Elementor category widgets (.product-cats, .elementor-widget-product-categories)
+ * - Term chips (.term-chip)
+ * - Any aria-pressed/is-selected/is-active variants
+ * 
+ * Specificity Strategy:
+ * - High-specificity selectors beat theme defaults
+ * - No !important unless inline styles require it
+ * - Focus ring always visible (WCAG AA)
+ * - No saturated blues/pinks allowed
+ * 
+ * C1 Selected State:
+ * - Background: var(--color-accent-surface-sage) #d9e8db
+ * - Text: var(--color-text-primary) #1E293B (AA contrast)
+ * - Border: transparent
+ * - Font-weight: 600 (semibold)
+ * 
+ * Override Priority: HIGHEST (loaded last in cascade)
+ */
+
+/* Unified Selected State - All Variants */
+.chip--selector[aria-pressed="true"],
+.chip--selector.chip--selected,
+.chip.chip--selected,
+.chip.is-selected,
+.chip[aria-pressed="true"],
+.chip[aria-selected="true"],
+.cas-chips .chip.is-selected,
+.cas-chips .chip[aria-pressed="true"],
+.cas-chips .chip[aria-selected="true"],
+.term-chip.is-active,
+.term-chip[aria-pressed="true"],
+.term-chip[aria-selected="true"],
+.woocommerce .widget_layered_nav_filters .chosen a,
+.woocommerce-page .widget_layered_nav_filters .chosen a,
+.woocommerce .widget_product_categories .current-cat > a,
+.woocommerce .widget_product_categories .current-cat-parent > a,
+.woocommerce .widget_product_categories .cat-item.current-cat > a,
+.woocommerce .widget_product_categories .cat-item.current-cat-parent > a,
+.woocommerce-page .widget_product_categories .current-cat > a,
+.woocommerce-page .widget_product_categories .current-cat-parent > a,
+.woocommerce-page .widget_product_categories .cat-item.current-cat > a,
+.woocommerce-page .widget_product_categories .cat-item.current-cat-parent > a,
+.product-cats .current-cat > a,
+.product-cats .current-cat-parent > a,
+.product-cats li.current-cat > a,
+ul.product-cats li.current-cat > a,
+.elementor-widget-product-categories .current-cat > a,
+.elementor-widget-product-categories .current-cat-parent > a,
+.elementor-widget-product-categories li.current-cat > a {
+	background-color: var(--color-accent-surface-sage);
+	color: var(--color-text-primary);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold);
+}
+
+/* Hover State for Selected Elements */
+.chip--selector[aria-pressed="true"]:hover,
+.chip--selector.chip--selected:hover,
+.chip.chip--selected:hover,
+.chip.is-selected:hover,
+.chip[aria-pressed="true"]:hover,
+.chip[aria-selected="true"]:hover,
+.cas-chips .chip.is-selected:hover,
+.cas-chips .chip[aria-pressed="true"]:hover,
+.cas-chips .chip[aria-selected="true"]:hover,
+.term-chip.is-active:hover,
+.term-chip[aria-pressed="true"]:hover,
+.term-chip[aria-selected="true"]:hover,
+.woocommerce .widget_layered_nav_filters .chosen a:hover,
+.woocommerce-page .widget_layered_nav_filters .chosen a:hover,
+.woocommerce .widget_product_categories .current-cat > a:hover,
+.woocommerce .widget_product_categories .current-cat-parent > a:hover,
+.woocommerce .widget_product_categories .cat-item.current-cat > a:hover,
+.woocommerce .widget_product_categories .cat-item.current-cat-parent > a:hover,
+.woocommerce-page .widget_product_categories .current-cat > a:hover,
+.woocommerce-page .widget_product_categories .current-cat-parent > a:hover,
+.woocommerce-page .widget_product_categories .cat-item.current-cat > a:hover,
+.woocommerce-page .widget_product_categories .cat-item.current-cat-parent > a:hover,
+.product-cats .current-cat > a:hover,
+.product-cats .current-cat-parent > a:hover,
+.product-cats li.current-cat > a:hover,
+ul.product-cats li.current-cat > a:hover,
+.elementor-widget-product-categories .current-cat > a:hover,
+.elementor-widget-product-categories .current-cat-parent > a:hover,
+.elementor-widget-product-categories li.current-cat > a:hover {
+	background-color: var(--color-accent-surface-sage-dark, #c9dfd0);
+	color: var(--color-text-primary);
+	border-color: transparent;
+	box-shadow: var(--shadow-card);
+}
+
+/* Active State for Selected Elements */
+.chip--selector[aria-pressed="true"]:active,
+.chip--selector.chip--selected:active,
+.chip.chip--selected:active,
+.chip.is-selected:active,
+.chip[aria-pressed="true"]:active,
+.chip[aria-selected="true"]:active,
+.cas-chips .chip.is-selected:active,
+.cas-chips .chip[aria-pressed="true"]:active,
+.cas-chips .chip[aria-selected="true"]:active,
+.term-chip.is-active:active,
+.term-chip[aria-pressed="true"]:active,
+.term-chip[aria-selected="true"]:active,
+.woocommerce .widget_layered_nav_filters .chosen a:active,
+.woocommerce-page .widget_layered_nav_filters .chosen a:active,
+.woocommerce .widget_product_categories .current-cat > a:active,
+.woocommerce .widget_product_categories .current-cat-parent > a:active,
+.woocommerce .widget_product_categories .cat-item.current-cat > a:active,
+.woocommerce .widget_product_categories .cat-item.current-cat-parent > a:active,
+.woocommerce-page .widget_product_categories .current-cat > a:active,
+.woocommerce-page .widget_product_categories .current-cat-parent > a:active,
+.woocommerce-page .widget_product_categories .cat-item.current-cat > a:active,
+.woocommerce-page .widget_product_categories .cat-item.current-cat-parent > a:active,
+.product-cats .current-cat > a:active,
+.product-cats .current-cat-parent > a:active,
+.product-cats li.current-cat > a:active,
+ul.product-cats li.current-cat > a:active,
+.elementor-widget-product-categories .current-cat > a:active,
+.elementor-widget-product-categories .current-cat-parent > a:active,
+.elementor-widget-product-categories li.current-cat > a:active {
+	background-color: var(--color-accent-surface-sage);
+	color: var(--color-text-primary);
+	transform: scale(0.98);
+}
+
+/* Focus State for Selected Elements */
+.chip--selector[aria-pressed="true"]:focus-visible,
+.chip--selector.chip--selected:focus-visible,
+.chip.chip--selected:focus-visible,
+.chip.is-selected:focus-visible,
+.chip[aria-pressed="true"]:focus-visible,
+.chip[aria-selected="true"]:focus-visible,
+.cas-chips .chip.is-selected:focus-visible,
+.cas-chips .chip[aria-pressed="true"]:focus-visible,
+.cas-chips .chip[aria-selected="true"]:focus-visible,
+.term-chip.is-active:focus-visible,
+.term-chip[aria-pressed="true"]:focus-visible,
+.term-chip[aria-selected="true"]:focus-visible,
+.woocommerce .widget_layered_nav_filters .chosen a:focus-visible,
+.woocommerce-page .widget_layered_nav_filters .chosen a:focus-visible,
+.woocommerce .widget_product_categories .current-cat > a:focus-visible,
+.woocommerce .widget_product_categories .current-cat-parent > a:focus-visible,
+.woocommerce .widget_product_categories .cat-item.current-cat > a:focus-visible,
+.woocommerce .widget_product_categories .cat-item.current-cat-parent > a:focus-visible,
+.woocommerce-page .widget_product_categories .current-cat > a:focus-visible,
+.woocommerce-page .widget_product_categories .current-cat-parent > a:focus-visible,
+.woocommerce-page .widget_product_categories .cat-item.current-cat > a:focus-visible,
+.woocommerce-page .widget_product_categories .cat-item.current-cat-parent > a:focus-visible,
+.product-cats .current-cat > a:focus-visible,
+.product-cats .current-cat-parent > a:focus-visible,
+.product-cats li.current-cat > a:focus-visible,
+ul.product-cats li.current-cat > a:focus-visible,
+.elementor-widget-product-categories .current-cat > a:focus-visible,
+.elementor-widget-product-categories .current-cat-parent > a:focus-visible,
+.elementor-widget-product-categories li.current-cat > a:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring), var(--a11y-focus-ring-outer-shadow);
+}
+
+/**
+ * EMERGENCY INLINE STYLE OVERRIDES
+ * 
+ * Only use !important if widgets inject inline style attributes that
+ * cannot be overridden via PHP filters or JavaScript.
+ * 
+ * To enable: Uncomment the section below.
+ * 
+ * WARNING: !important reduces maintainability. Always prefer:
+ * 1. PHP filters to remove inline styles at the source
+ * 2. JavaScript to strip style attributes on DOM load
+ * 3. High-specificity selectors (current approach)
+ * 
+ * Only enable if third-party plugins force inline colors via:
+ * - style="background-color: #2563EB"
+ * - style="color: #ff007f"
+ * 
+ * Document why !important is needed when enabled.
+ */
+
+/*
+.chip.is-selected[style],
+.chip[aria-pressed="true"][style],
+.woocommerce .widget_product_categories .current-cat > a[style],
+.product-cats .current-cat > a[style],
+.elementor-widget-product-categories .current-cat > a[style] {
+	background-color: var(--color-accent-surface-sage) !important;
+	color: var(--color-text-primary) !important;
+	border-color: transparent !important;
+}
+*/

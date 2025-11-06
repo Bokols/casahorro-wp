@@ -1,0 +1,205 @@
+/**
+ * Breadcrumbs Styles
+ * casAhorro Design System
+ * 
+ * Accessible breadcrumb navigation with C1 compliant colors
+ * and proper ARIA labeling. Responsive design with text truncation.
+ * 
+ * @package HelloElementorChild
+ */
+
+/* ========================================
+   BREADCRUMBS CONTAINER
+   ======================================== */
+
+.cas-breadcrumbs {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	background: var(--color-surface-background, #FFFFFF) !important;
+	border-bottom: 1px solid var(--color-border-default, #E2E8F0);
+	padding: var(--spacing-3, 12px) 0;
+	font-size: var(--font-size-small, 14px);
+	line-height: var(--line-height-normal, 1.6);
+}
+
+.cas-breadcrumbs__container {
+	max-width: var(--container-max-width, 1280px);
+	margin: 0 auto;
+	padding: 0 var(--container-padding, 20px);
+}
+
+.cas-breadcrumbs__list {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--spacing-2, 8px);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* ========================================
+   BREADCRUMB ITEMS
+   ======================================== */
+
+.cas-breadcrumbs__item {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-2, 8px);
+	color: var(--color-text-secondary, #64748B);
+}
+
+/* Prevent breadcrumbs from wrapping on mobile */
+@media (max-width: 640px) {
+	.cas-breadcrumbs__item {
+		max-width: 150px;
+	}
+}
+
+/* ========================================
+   BREADCRUMB LINKS
+   ======================================== */
+
+.cas-breadcrumbs__link {
+	color: var(--color-text-secondary, #64748B);
+	text-decoration: none;
+	transition: color var(--motion-duration-fast, 180ms) var(--motion-easing-default, ease);
+	
+	/* Truncate long text on mobile */
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.cas-breadcrumbs__link:hover {
+	color: var(--color-text-primary, #1E293B);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+}
+
+.cas-breadcrumbs__link:focus-visible {
+	outline: 3px solid currentColor;
+	outline-offset: 2px;
+	border-radius: var(--radius-xs, 4px);
+}
+
+/* ========================================
+   CURRENT PAGE (LAST ITEM)
+   ======================================== */
+
+.cas-breadcrumbs__current {
+	color: var(--color-text-primary, #1E293B);
+	font-weight: var(--font-weight-medium, 500);
+	
+	/* Truncate long text on mobile */
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* ========================================
+   SEPARATOR
+   ======================================== */
+
+.cas-breadcrumbs__separator {
+	color: var(--color-text-tertiary, #94A3B8);
+	user-select: none;
+	flex-shrink: 0;
+}
+
+/* Hide separator after last item */
+.cas-breadcrumbs__item:last-child .cas-breadcrumbs__separator {
+	display: none;
+}
+
+/* ========================================
+   HOME ICON
+   ======================================== */
+
+.cas-breadcrumbs__home-icon {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 4px;
+	flex-shrink: 0;
+}
+
+.cas-breadcrumbs__home-icon svg {
+	width: 100%;
+	height: 100%;
+	fill: currentColor;
+}
+
+/* ========================================
+   SCREEN READER TEXT
+   ======================================== */
+
+.cas-breadcrumbs__sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 640px) {
+	.cas-breadcrumbs {
+		font-size: var(--font-size-xs, 13px);
+		padding: var(--spacing-2, 8px) 0;
+	}
+	
+	.cas-breadcrumbs__list {
+		gap: var(--spacing-1, 4px);
+	}
+	
+	.cas-breadcrumbs__separator {
+		margin: 0 var(--spacing-1, 4px);
+	}
+	
+	/* Truncate middle items more aggressively on mobile */
+	.cas-breadcrumbs__item:not(:first-child):not(:last-child) {
+		max-width: 100px;
+	}
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.cas-breadcrumbs__link {
+		transition: none;
+	}
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+	.cas-breadcrumbs__link:focus-visible {
+		outline: 2px solid Highlight;
+	}
+}
+
+/* Print styles */
+@media print {
+	.cas-breadcrumbs {
+		border: none;
+		background: transparent;
+		padding: 0.5rem 0;
+	}
+	
+	.cas-breadcrumbs__separator {
+		margin: 0 0.25rem;
+	}
+}

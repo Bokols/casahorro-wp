@@ -1,0 +1,237 @@
+/**
+ * Compare FAB Component
+ * casAhorro Design System - Phase 2
+ * 
+ * Fixed circular FAB at bottom-right with:
+ * - Neutral slate colors (no pink/magenta/blue)
+ * - Safe-area insets for CookieYes banner and drawers
+ * - Transform/opacity animations only (no CLS)
+ * - WCAG AA focus styles
+ * - Reduced motion support
+ * 
+ * Z-index: 1000 (below modal/drawer, above header)
+ * Sample UI copy (es-CL): "Comparar (2)"
+ * 
+ * @package HelloElementorChild
+ */
+
+/* ========================================
+   COMPARE FAB - Fixed Bottom Right
+   ======================================== */
+
+.cas-compare-fab {
+	/* Positioning */
+	position: fixed;
+	bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));
+	right: max(1.5rem, env(safe-area-inset-right, 1.5rem));
+	z-index: var(--z-fab);
+	
+	/* Layout */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	padding: 0;
+	
+	/* Appearance */
+	background-color: var(--color-surface-background);
+	border: 2px solid var(--color-border-default);
+	border-radius: var(--radius-full);
+	box-shadow: var(--shadow-elevated);
+	color: var(--color-text-primary);
+	
+	/* Interaction */
+	cursor: pointer;
+	user-select: none;
+	
+	/* Animation */
+	transition: 
+		transform var(--motion-duration-fast) var(--motion-easing-default),
+		box-shadow var(--motion-duration-fast) var(--motion-easing-default),
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		border-color var(--motion-duration-fast) var(--motion-easing-default);
+	will-change: transform;
+}
+
+/* Hover State */
+.cas-compare-fab:hover {
+	transform: scale(1.05);
+	background-color: var(--color-surface-background-alt);
+	border-color: var(--color-border-medium);
+	box-shadow: 
+		0 6px 12px -2px rgba(0, 0, 0, 0.1),
+		0 4px 6px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus State (WCAG AA) */
+.cas-compare-fab:focus-visible {
+	outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+	outline-offset: var(--a11y-focus-ring-offset);
+	box-shadow: var(--shadow-focus-ring);
+}
+
+/* Active State */
+.cas-compare-fab:active {
+	transform: scale(0.95);
+}
+
+/* ========================================
+   FAB ICON
+   ======================================== */
+
+.cas-compare-fab__icon {
+	width: 24px;
+	height: 24px;
+	flex-shrink: 0;
+	color: var(--color-text-primary);
+	transition: color var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.cas-compare-fab:hover .cas-compare-fab__icon {
+	color: var(--color-text-secondary);
+}
+
+/* ========================================
+   FAB BADGE (Count)
+   ======================================== */
+
+.cas-compare-fab__badge {
+	/* Positioning */
+	position: absolute;
+	top: -4px;
+	right: -4px;
+	
+	/* Layout */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 20px;
+	height: 20px;
+	padding: 0 4px;
+	
+	/* Appearance */
+	background-color: var(--color-text-primary);
+	border: 2px solid var(--color-surface-background);
+	border-radius: var(--radius-full);
+	
+	/* Typography */
+	font-size: var(--font-size-micro);
+	font-weight: var(--font-weight-bold);
+	color: var(--color-text-inverse);
+	line-height: 1;
+	
+	/* Animation */
+	transition: 
+		opacity var(--motion-duration-fast) var(--motion-easing-default),
+		transform var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+/* Empty badge (hidden when count = 0) */
+.cas-compare-fab__badge:empty {
+	display: none;
+}
+
+/* ========================================
+   MOBILE ADJUSTMENTS
+   ======================================== */
+
+/* Avoid collision with CookieYes banner (appears bottom-center on mobile) */
+@media (max-width: 640px) {
+	.cas-compare-fab {
+		bottom: max(5rem, env(safe-area-inset-bottom, 5rem));
+	}
+}
+
+/* Smaller FAB on very small screens */
+@media (max-width: 480px) {
+	.cas-compare-fab {
+		width: 48px;
+		height: 48px;
+	}
+	
+	.cas-compare-fab__icon {
+		width: 20px;
+		height: 20px;
+	}
+	
+	.cas-compare-fab__badge {
+		min-width: 18px;
+		height: 18px;
+		font-size: 11px;
+	}
+}
+
+/* ========================================
+   SAFE AREA ADJUSTMENTS
+   ======================================== */
+
+/* When drawer is open, shift FAB left to avoid overlap */
+body.drawer-open .cas-compare-fab {
+	transform: translateX(-320px);
+}
+
+body.drawer-open .cas-compare-fab:hover {
+	transform: translateX(-320px) scale(1.05);
+}
+
+body.drawer-open .cas-compare-fab:active {
+	transform: translateX(-320px) scale(0.95);
+}
+
+/* Hide FAB when compare drawer specifically is open */
+body.compare-drawer-open .cas-compare-fab {
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.cas-compare-fab,
+	.cas-compare-fab__icon,
+	.cas-compare-fab__badge {
+		transition: none !important;
+		animation: none !important;
+	}
+	
+	.cas-compare-fab:hover,
+	.cas-compare-fab:active,
+	body.drawer-open .cas-compare-fab:hover,
+	body.drawer-open .cas-compare-fab:active {
+		transform: none !important;
+	}
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (forced-colors: active) {
+	.cas-compare-fab {
+		border: 2px solid ButtonBorder;
+		background-color: ButtonFace;
+		color: ButtonText;
+	}
+	
+	.cas-compare-fab:focus-visible {
+		outline: 2px solid Highlight;
+	}
+	
+	.cas-compare-fab__badge {
+		background-color: Highlight;
+		color: HighlightText;
+	}
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+	.cas-compare-fab {
+		display: none !important;
+	}
+}

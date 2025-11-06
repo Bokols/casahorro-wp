@@ -1,0 +1,337 @@
+/**
+ * WooCommerce Shop Grid - Responsive Product Cards
+ * 
+ * Implements a modern CSS Grid layout for product archives
+ * that auto-fits columns and ensures cards fill their grid cells.
+ * 
+ * Scope: WooCommerce product archives only (.woocommerce, .woocommerce-page)
+ * Does NOT affect: Single product pages, Elementor grids, other templates
+ * 
+ * Priority: Loaded AFTER Elementor/Autoptimize to override default styles
+ * 
+ * @package HelloElementorChild
+ * @version 1.0.0
+ */
+
+/* ========================================
+   GRID CONTAINER - PRODUCT ARCHIVES ONLY
+   ======================================== */
+
+/**
+ * Modern CSS Grid with auto-fit columns
+ * Targets: Shop page, category archives, search results
+ */
+.woocommerce ul.products,
+.woocommerce-page ul.products {
+	display: grid !important; /* Override WooCommerce default flex/float */
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+	gap: var(--grid-gap, 24px) !important;
+	
+	/* Reset legacy layout properties */
+	margin: 0 !important;
+	padding: 0 !important;
+	list-style: none !important;
+	
+	/* Remove float-based layout */
+	float: none !important;
+	clear: both !important;
+	
+	/* Full width within container */
+	width: 100% !important;
+	max-width: 100% !important;
+}
+
+/* ========================================
+   GRID ITEMS - PRODUCT CARDS
+   ======================================== */
+
+/**
+ * Ensure grid items fill their cells
+ * Neutralize legacy width constraints from WooCommerce/Elementor
+ */
+.woocommerce ul.products li.product,
+.woocommerce-page ul.products li.product {
+	/* Fill grid cell */
+	width: 100% !important;
+	max-width: none !important;
+	min-width: 0 !important; /* Allow shrinking below content size */
+	
+	/* Reset legacy layout */
+	float: none !important;
+	clear: none !important;
+	display: block !important;
+	margin: 0 !important; /* Gap handled by grid */
+	padding: 0 !important;
+	
+	/* Remove inline styles if present */
+	position: relative !important;
+}
+
+/* ========================================
+   INNER WRAPPERS - STRETCH TO FILL
+   ======================================== */
+
+/**
+ * Remove width constraints from WooCommerce/Elementor wrappers
+ * Ensures content fills the grid cell width
+ */
+
+/* WooCommerce product link wrapper */
+.woocommerce ul.products li.product a,
+.woocommerce ul.products li.product .woocommerce-loop-product__link,
+.woocommerce-page ul.products li.product a,
+.woocommerce-page ul.products li.product .woocommerce-loop-product__link {
+	display: block !important;
+	width: 100% !important;
+	max-width: none !important;
+	text-decoration: none;
+}
+
+/* Product card component */
+.woocommerce ul.products li.product .product-card,
+.woocommerce-page ul.products li.product .product-card {
+	width: 100% !important;
+	max-width: none !important;
+	min-width: 0 !important;
+}
+
+/* Elementor widget wrappers (if present in product loop) */
+.woocommerce ul.products li.product .elementor-widget-wrap,
+.woocommerce ul.products li.product .elementor-widget-container,
+.woocommerce-page ul.products li.product .elementor-widget-wrap,
+.woocommerce-page ul.products li.product .elementor-widget-container {
+	width: 100% !important;
+	max-width: none !important;
+}
+
+/* WooCommerce inner divs */
+.woocommerce ul.products li.product > div,
+.woocommerce-page ul.products li.product > div {
+	width: 100% !important;
+	max-width: none !important;
+}
+
+/* ========================================
+   BREAKPOINT ADJUSTMENTS
+   ======================================== */
+
+/**
+ * Responsive grid adjustments
+ * Ensures minimum card width at narrow viewports
+ */
+
+/* Mobile - Single column */
+@media (max-width: 639px) {
+	.woocommerce ul.products,
+	.woocommerce-page ul.products {
+		grid-template-columns: 1fr !important;
+		gap: var(--grid-gap-mobile, 16px) !important;
+	}
+}
+
+/* Tablet - 2 columns */
+@media (min-width: 640px) and (max-width: 1023px) {
+	.woocommerce ul.products,
+	.woocommerce-page ul.products {
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+		gap: var(--grid-gap-tablet, 20px) !important;
+	}
+}
+
+/* Desktop - 3-4 columns (auto-fit based on container width) */
+@media (min-width: 1024px) {
+	.woocommerce ul.products,
+	.woocommerce-page ul.products {
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+		gap: var(--grid-gap, 24px) !important;
+	}
+}
+
+/* Large desktop - 4-5 columns */
+@media (min-width: 1440px) {
+	.woocommerce ul.products,
+	.woocommerce-page ul.products {
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+	}
+}
+
+/* ========================================
+   LEGACY OVERRIDES - NEUTRALIZE FLOATS
+   ======================================== */
+
+/**
+ * Remove WooCommerce default float-based layout
+ * Common legacy selectors from older WooCommerce versions
+ */
+
+/* Clear floats from before/after pseudo-elements */
+.woocommerce ul.products::before,
+.woocommerce ul.products::after,
+.woocommerce-page ul.products::before,
+.woocommerce-page ul.products::after {
+	display: none !important;
+	content: none !important;
+}
+
+/* Remove columns class effects (WooCommerce adds .columns-4, etc.) */
+.woocommerce ul.products.columns-1,
+.woocommerce ul.products.columns-2,
+.woocommerce ul.products.columns-3,
+.woocommerce ul.products.columns-4,
+.woocommerce ul.products.columns-5,
+.woocommerce ul.products.columns-6,
+.woocommerce-page ul.products.columns-1,
+.woocommerce-page ul.products.columns-2,
+.woocommerce-page ul.products.columns-3,
+.woocommerce-page ul.products.columns-4,
+.woocommerce-page ul.products.columns-5,
+.woocommerce-page ul.products.columns-6 {
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+}
+
+/* Remove nth-child clear fixes (WooCommerce uses these for float layouts) */
+.woocommerce ul.products li.product:nth-child(n),
+.woocommerce-page ul.products li.product:nth-child(n) {
+	clear: none !important;
+	margin-right: 0 !important;
+}
+
+/* ========================================
+   CONTAINER WIDTH GUARDS
+   ======================================== */
+
+/**
+ * Allow grid container to expand to 100% of available space
+ * Prevents narrow grids caused by parent max-width constraints
+ * Scoped to product archives only
+ */
+
+/* Product archive main content area */
+.woocommerce .woocommerce-products-header + *,
+.woocommerce-page .woocommerce-products-header + * {
+	max-width: 100% !important;
+}
+
+/* Ensure wrapper doesn't constrain grid */
+.woocommerce .products-wrapper,
+.woocommerce-page .products-wrapper,
+.woocommerce .woocommerce-products,
+.woocommerce-page .woocommerce-products {
+	max-width: 100% !important;
+	width: 100% !important;
+}
+
+/* ========================================
+   AUTOPTIMIZE CACHE BUSTING
+   ======================================== */
+
+/**
+ * Unique selector to force Autoptimize to regenerate bundles
+ * Update version comment when CSS changes
+ * Current version: 1.0.0
+ */
+.woocommerce ul.products {
+	/* Version: 1.0.0 - CSS Grid implementation */
+	--shop-grid-version: '1.0.0';
+}
+
+/* ========================================
+   SAFETY GUARDS - NON-SHOP PAGES
+   ======================================== */
+
+/**
+ * Do NOT apply grid to:
+ * - Single product pages (.single-product)
+ * - Related products (use default layout)
+ * - Upsells/Cross-sells (use default layout)
+ * - Elementor widgets outside shop context
+ */
+
+/* Exclude single product page grids */
+.single-product ul.products {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	grid-template-columns: unset !important;
+}
+
+/* Exclude related/upsell products (keep WooCommerce default) */
+.related.products ul.products,
+.upsells.products ul.products,
+.cross-sells ul.products {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	grid-template-columns: unset !important;
+}
+
+/* Exclude Elementor product widgets (unless on shop page) */
+.elementor-widget-products ul.products {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	grid-template-columns: unset !important;
+}
+
+/* Re-enable grid ONLY on shop pages within Elementor widgets */
+.woocommerce.archive .elementor-widget-products ul.products,
+.woocommerce-page.archive .elementor-widget-products ul.products {
+	display: grid !important;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+}
+
+/* ========================================
+   ACCESSIBILITY - REDUCED MOTION
+   ======================================== */
+
+/**
+ * Respect user preferences for reduced motion
+ * Grid layout is static, but guards against future transitions
+ */
+@media (prefers-reduced-motion: reduce) {
+	.woocommerce ul.products,
+	.woocommerce ul.products li.product {
+		transition: none !important;
+	}
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+/**
+ * Ensure grid remains readable in forced colors mode
+ */
+@media (forced-colors: active) {
+	.woocommerce ul.products {
+		border: 1px solid ButtonBorder;
+	}
+	
+	.woocommerce ul.products li.product {
+		border: 1px solid ButtonBorder;
+	}
+}
+
+/* ========================================
+   DEBUG - DEVELOPMENT ONLY
+   ======================================== */
+
+/**
+ * Uncomment to visualize grid cells during development
+ * Remove before production deployment
+ */
+
+/*
+.woocommerce ul.products {
+	background: repeating-linear-gradient(
+		90deg,
+		rgba(255, 0, 0, 0.1) 0px,
+		rgba(255, 0, 0, 0.1) 1px,
+		transparent 1px,
+		transparent
+	);
+}
+
+.woocommerce ul.products li.product {
+	outline: 2px dashed rgba(0, 255, 0, 0.5);
+	outline-offset: -2px;
+}
+*/

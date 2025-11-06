@@ -1,0 +1,126 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-declaration-strict-value"
+  ],
+  "rules": {
+    "scale-unlimited/declaration-strict-value": [
+      [
+        "color",
+        "background-color",
+        "border-color",
+        "fill",
+        "stroke",
+        "background",
+        "border",
+        "border-top-color",
+        "border-right-color",
+        "border-bottom-color",
+        "border-left-color",
+        "outline-color",
+        "text-decoration-color"
+      ],
+      {
+        "ignoreValues": [
+          "transparent",
+          "currentColor",
+          "inherit",
+          "initial",
+          "unset",
+          "none"
+        ],
+        "ignoreKeywords": {
+          "": [
+            "transparent",
+            "currentColor",
+            "inherit",
+            "initial",
+            "unset"
+          ],
+          "/^border/": [
+            "none"
+          ]
+        },
+        "autoFixFunc": false,
+        "message": "Color properties must use CSS custom properties (variables). Expected format: var(--color-*), var(--accent-*), or var(--a11y-*). Exception: Only tokens.css can define raw color values."
+      }
+    ],
+    "custom-property-pattern": [
+      "^(color|accent|a11y|spacing|font|radius|shadow|motion|container|surface|border|text|interactive|z-index)-[a-z0-9-]+$",
+      {
+        "message": "Custom property names must follow the C1 token pattern: --color-*, --accent-*, --a11y-*, --spacing-*, --font-*, --radius-*, --shadow-*, --motion-*, --container-*, --surface-*, --border-*, --text-*, --interactive-*, --z-index-*"
+      }
+    ],
+    "declaration-property-value-no-unknown": true,
+    "color-hex-length": "long",
+    "color-named": "never",
+    "color-no-hex": [
+      true,
+      {
+        "message": "Hex colors are not allowed. Use CSS custom properties instead: var(--color-*)"
+      }
+    ],
+    "function-disallowed-list": [
+      [
+        "rgb",
+        "hsl"
+      ],
+      {
+        "message": "RGB/HSL functions are not allowed except in tokens.css. Use CSS custom properties: var(--color-*)"
+      }
+    ],
+    "selector-class-pattern": null,
+    "custom-property-empty-line-before": null,
+    "declaration-empty-line-before": null,
+    "rule-empty-line-before": [
+      "always-multi-line",
+      {
+        "except": [
+          "first-nested"
+        ],
+        "ignore": [
+          "after-comment"
+        ]
+      }
+    ],
+    "comment-empty-line-before": [
+      "always",
+      {
+        "except": [
+          "first-nested"
+        ],
+        "ignore": [
+          "stylelint-commands"
+        ]
+      }
+    ],
+    "max-empty-lines": 2,
+    "no-descending-specificity": null,
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      {
+        "ignoreFontFamilies": [
+          "var"
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/tokens.css"
+      ],
+      "rules": {
+        "scale-unlimited/declaration-strict-value": null,
+        "color-no-hex": null,
+        "function-disallowed-list": null
+      }
+    }
+  ],
+  "ignoreFiles": [
+    "node_modules/**",
+    "vendor/**",
+    "dist/**",
+    "build/**"
+  ]
+}

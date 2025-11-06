@@ -1,0 +1,24 @@
+/*
+ Theme Name:     Hello Elementor Child
+ Theme URI:      https://example.com/hello-elementor-child
+ Description:    Child theme for Hello Elementor with minimal, production-safe scaffolding
+ Author:         casAhorro
+ Author URI:     https://example.com/
+ Template:       hello-elementor
+ Version:        1.1.0
+ Requires at least: 6.0
+ Requires PHP: 8.2
+ Text Domain:    hello-elementor-child
+*/
+
+/*
+  The child theme stylesheet intentionally contains minimal styling.
+  Theme styles are loaded via enqueue in functions.php to ensure
+  the correct load order: parent -> child -> tokens -> scripts.
+*/
+
+/* Example body reset to demonstrate child theme is active */
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}

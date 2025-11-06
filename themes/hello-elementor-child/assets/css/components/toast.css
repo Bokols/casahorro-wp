@@ -1,0 +1,411 @@
+/**
+ * Toast Notification Component
+ * casAhorro Design System
+ * 
+ * aria-live="polite" for screen readers
+ * Non-blocking, auto-dismiss (3-4s)
+ * Queue support for multiple toasts
+ * 
+ * Sample UI copy (es-CL): "Copiado al portapapeles", "Producto agregado a comparación"
+ * No analytics. Respects prefers-reduced-motion.
+ */
+
+/* ========================================
+   TOAST CONTAINER
+   ======================================== */
+
+/**
+ * Fixed container for toast notifications
+ * Bottom-center by default
+ */
+.toast-container {
+	position: fixed;
+	bottom: var(--spacing-6);
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: calc(var(--z-fab) + 100);
+	
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	gap: var(--spacing-3);
+	
+	max-width: 90vw;
+	width: 100%;
+	max-width: 600px;
+	
+	pointer-events: none;
+}
+
+/* Mobile: Adjust position for FAB */
+@media (max-width: 640px) {
+	.toast-container {
+		bottom: calc(var(--spacing-6) + 80px);
+	}
+}
+
+/* ========================================
+   TOAST ITEM
+   ======================================== */
+
+.toast {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3);
+	
+	min-height: 52px;
+	padding: var(--spacing-4) var(--spacing-5);
+	
+	background-color: var(--color-accent-surface-mint); /* Pastel-First UI */
+	color: var(--color-text-primary); /* Neutral text for AA contrast */
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-elevated);
+	
+	pointer-events: auto;
+	cursor: default;
+	
+	/* Animation: Slide up + fade in */
+	opacity: 0;
+	transform: translateY(20px);
+	animation: toast-enter var(--motion-duration-normal) var(--motion-easing-out) forwards;
+}
+
+@keyframes toast-enter {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Exit animation */
+.toast.is-exiting {
+	animation: toast-exit var(--motion-duration-normal) var(--motion-easing-in) forwards;
+}
+
+@keyframes toast-exit {
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+}
+
+/* ========================================
+   TOAST VARIANTS
+   ======================================== */
+
+/* Success Toast */
+.toast--success {
+	background-color: var(--color-success-surface);
+	color: var(--color-success-text);
+}
+
+/* Error Toast */
+.toast--error {
+	background-color: var(--color-error-surface);
+	color: var(--color-error-text);
+}
+
+/* Warning Toast */
+.toast--warning {
+	background-color: var(--color-warning-surface);
+	color: var(--color-warning-text);
+}
+
+/* Info Toast */
+.toast--info {
+	background-color: var(--color-info-surface);
+	color: var(--color-info-text);
+}
+
+/* Neutral/Default Toast - Pastel-First UI */
+.toast--neutral {
+	background-color: var(--color-accent-surface-mint);
+	color: var(--color-text-primary);
+}
+
+.toast--neutral .toast__close {
+	color: var(--color-accent-ink, var(--color-accent-ink-fallback));
+}
+
+/* ========================================
+   TOAST COMPONENTS
+   ======================================== */
+
+/* Toast Icon */
+.toast__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	flex-shrink: 0;
+}
+
+.toast__icon svg {
+	width: 100%;
+	height: 100%;
+	fill: currentColor;
+}
+
+/* Toast Message */
+.toast__message {
+	flex: 1;
+	font-size: var(--font-size-small);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--line-height-small);
+}
+
+/* Toast Action Button */
+.toast__action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 36px;
+	padding: var(--spacing-2) var(--spacing-4);
+	
+	background-color: rgba(255, 255, 255, 0.15);
+	color: inherit;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	border-radius: var(--radius-md);
+	
+	font-size: var(--font-size-small);
+	font-weight: var(--font-weight-semibold);
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	
+	transition: 
+		background-color var(--motion-duration-fast) var(--motion-easing-default),
+		border-color var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.toast__action:hover {
+	background-color: rgba(255, 255, 255, 0.25);
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+.toast__action:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+/* Toast Close Button - Accent Ink for Icon */
+.toast__close {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 32px;
+	min-height: 32px;
+	padding: var(--spacing-1);
+	
+	background-color: transparent;
+	color: var(--color-accent-ink, var(--color-accent-ink-fallback));
+	border: none;
+	border-radius: var(--radius-md);
+	cursor: pointer;
+	
+	transition: background-color var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.toast__close:hover {
+	background-color: rgba(30, 41, 59, 0.08);
+}
+
+.toast__close:focus-visible {
+	outline: 2px solid var(--color-text-primary);
+	outline-offset: 1px;
+}
+
+.toast__close-icon {
+	width: 16px;
+	height: 16px;
+}
+
+/* ========================================
+   TOAST PROGRESS BAR
+   ======================================== */
+
+/**
+ * Visual indicator for auto-dismiss timer
+ * Duration: 3-4 seconds
+ */
+.toast__progress {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background-color: rgba(255, 255, 255, 0.2);
+	border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+	overflow: hidden;
+}
+
+.toast__progress-bar {
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.5);
+	transform-origin: left;
+	animation: toast-progress 3s linear forwards;
+}
+
+@keyframes toast-progress {
+	from {
+		transform: scaleX(1);
+	}
+	to {
+		transform: scaleX(0);
+	}
+}
+
+/* 4-second variant */
+.toast--slow .toast__progress-bar {
+	animation-duration: 4s;
+}
+
+/* Pause progress on hover */
+.toast:hover .toast__progress-bar {
+	animation-play-state: paused;
+}
+
+/* ========================================
+   TOAST POSITIONS
+   ======================================== */
+
+/* Top positions */
+.toast-container--top-left {
+	top: var(--spacing-6);
+	bottom: auto;
+	left: var(--spacing-6);
+	transform: none;
+	align-items: flex-start;
+}
+
+.toast-container--top-center {
+	top: var(--spacing-6);
+	bottom: auto;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.toast-container--top-right {
+	top: var(--spacing-6);
+	bottom: auto;
+	left: auto;
+	right: var(--spacing-6);
+	transform: none;
+	align-items: flex-end;
+}
+
+/* Bottom positions */
+.toast-container--bottom-left {
+	left: var(--spacing-6);
+	transform: none;
+	align-items: flex-start;
+}
+
+.toast-container--bottom-center {
+	/* Default position - no additional styles needed */
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.toast-container--bottom-right {
+	left: auto;
+	right: var(--spacing-6);
+	transform: none;
+	align-items: flex-end;
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/**
+ * Screen reader announcements
+ * aria-live="polite" on container
+ * role="status" on individual toasts
+ */
+.toast[role="status"] {
+	/* Ensure proper ARIA semantics for screen readers */
+	position: relative;
+}
+
+/* Screen Reader Only Text */
+.toast__sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ========================================
+   COMMON TOAST PATTERNS
+   ======================================== */
+
+/* Copy to Clipboard Toast */
+.toast--clipboard {
+	/* Example: "Copiado al portapapeles" */
+	background-color: var(--color-info-surface);
+	color: var(--color-info-text);
+}
+
+/* Product Added to Compare Toast */
+.toast--compare-added {
+	/* Example: "Producto agregado a comparación" */
+	background-color: var(--color-success-surface);
+	color: var(--color-success-text);
+}
+
+/* Product Removed from Compare Toast */
+.toast--compare-removed {
+	/* Example: "Producto quitado de comparación" */
+	background-color: var(--color-warning-surface);
+	color: var(--color-warning-text);
+}
+
+/* Filter Applied Toast */
+.toast--filter-applied {
+	/* Example: "Filtros aplicados" */
+	background-color: var(--color-accent-mint);
+	color: var(--color-text-primary);
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 640px) {
+	.toast {
+		width: 100%;
+		max-width: calc(100vw - var(--spacing-8));
+	}
+	
+	.toast__message {
+		font-size: var(--font-size-small);
+	}
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.toast {
+		animation: none !important;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+	
+	.toast.is-exiting {
+		display: none;
+	}
+	
+	.toast__progress-bar {
+		animation: none !important;
+	}
+}

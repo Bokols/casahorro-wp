@@ -1,0 +1,1224 @@
+/**
+ * Color Guard - C1 Token Enforcement
+ * casAhorro Design System
+ * 
+ * Enforces C1 design tokens across common WordPress, WooCommerce, and Elementor
+ * selectors to prevent non-token colors from appearing in the UI.
+ * 
+ * Strategy:
+ * - High-specificity selectors to override theme defaults without !important
+ * - Pastel surfaces for selected/active states (sage primary)
+ * - Neutral text for all interactive elements (AA contrast guaranteed)
+ * - No saturated blues, pinks, or non-token colors allowed
+ * - Blocks common saturated reds/pinks: #e11d48, #db2777, #d946ef, #be185d, #ff3366, #d13a6a
+ * - Enforces C1 interaction patterns:
+ *   • Link hover = underline only (no background change)
+ *   • Button hover = slight opacity change (0.9) + background lightening
+ *   • Focus-visible = 3px outline using currentColor (no filled pill)
+ * - Maintains WCAG AA contrast throughout all states
+ * 
+ * Covered Components:
+ * - Links and anchors
+ * - Buttons (WordPress, WooCommerce, Elementor)
+ * - Selected states (chips, tabs, categories, pagination)
+ * - Notices and alerts
+ * 
+ * Dependencies: tokens.css v1.3.0
+ * 
+ * @package HelloElementorChild
+ * @since 1.0.0
+ */
+
+/* ========================================
+   BASE LINKS & ANCHORS
+   ======================================== */
+
+/**
+ * Enforce neutral link colors across all content areas
+ * Maintains underline for accessibility, uses C1 text tokens
+ */
+a,
+a:link,
+.entry-content a,
+.post-content a,
+.page-content a,
+.widget a,
+.site-footer a,
+.elementor-widget a,
+.woocommerce a {
+	color: var(--color-text-primary, #1E293B);
+	text-decoration: underline;
+	text-decoration-color: var(--color-border-medium, #CBD5E1);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+	transition: color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+	            text-decoration-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/**
+ * Links - INTERACTION PATTERN: Underline on hover, NO color change
+ * 
+ * RULE: Links keep same color on hover, only underline changes
+ * - default = #1E293B
+ * - hover = underline becomes visible (NO color change)
+ * - active = #475569 + underline
+ * - focus-visible = 3px outline
+ */
+a:not(.button):not(.btn):not(.elementor-button):not(.woocommerce-button),
+a:focus,
+.entry-content a:hover,
+.post-content a:hover,
+.widget a:hover,
+.elementor-widget a:hover,
+.woocommerce a:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* KEEP SAME COLOR */
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	text-decoration-thickness: 2px;
+	background-color: transparent !important; /* No filled backgrounds */
+	transition: text-decoration-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+	            text-decoration-thickness var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Active state: darker color allowed */
+a:not(.button):not(.btn):not(.elementor-button):not(.woocommerce-button):active {
+	color: var(--color-text-secondary, #475569) !important;
+	text-decoration-color: currentColor;
+}
+
+/**
+ * Focus-visible - INTERACTION PATTERN: 3px outline using currentColor
+ * NO filled backgrounds, NO pills
+ */
+a:focus-visible,
+.entry-content a:focus-visible,
+.elementor-widget a:focus-visible,
+.woocommerce a:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	background-color: transparent !important; /* No filled pill */
+	box-shadow: none !important;
+}
+
+/* ========================================
+   BUTTONS - GLOBAL ENFORCEMENT
+   ======================================== */
+
+/**
+ * Base button styles - neutral backgrounds with C1 tokens
+ * Covers WordPress, WooCommerce, and Elementor button classes
+ * No saturated colors allowed
+ */
+button,
+.button,
+.btn,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+.wp-block-button__link,
+.elementor-button,
+.elementor-button-link,
+.woocommerce button.button,
+.woocommerce a.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.woocommerce-page button.button,
+.woocommerce-page a.button,
+.woocommerce-page input.button {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-text-primary, #1E293B);
+	border: 2px solid var(--color-border-default, #E2E8F0);
+	border-radius: var(--radius-lg, 12px);
+	padding: var(--spacing-3, 12px) var(--spacing-6, 24px);
+	font-weight: var(--font-weight-medium, 500);
+	text-decoration: none;
+	cursor: pointer;
+	transition: 
+		background-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+		border-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+		color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+		box-shadow var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/**
+ * Button hover - INTERACTION PATTERN: Opacity -8% only, NO hue shift
+ * 
+ * RULE: Buttons change opacity on hover, NOT color
+ * - hover = opacity 0.92 (−8%)
+ * - NO saturated backgrounds
+ * - NO color changes
+ */
+button:hover,
+.button:hover,
+.btn:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.wp-block-button__link:hover,
+.elementor-button:hover,
+.woocommerce button.button:hover,
+.woocommerce a.button:hover {
+	opacity: 0.92 !important; /* −8% opacity */
+	/* Colors stay the same - no hue shift */
+	box-shadow: var(--shadow-card, 0 1px 3px rgba(30, 41, 59, 0.1));
+}
+
+/**
+ * Button active - INTERACTION PATTERN: Slight transform
+ */
+button:active,
+.button:active,
+.btn:active,
+.elementor-button:active,
+.woocommerce button.button:active {
+	transform: translateY(1px);
+	opacity: 0.92 !important;
+}
+
+/**
+ * Button focus-visible - INTERACTION PATTERN: 3px outline using currentColor
+ */
+button:focus-visible,
+.button:focus-visible,
+.btn:focus-visible,
+.elementor-button:focus-visible,
+.woocommerce button.button:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	box-shadow: none !important;
+}
+
+/* Primary Button Variant - Uses Sage Pastel */
+.button--primary,
+.btn--primary,
+.wp-block-button.is-style-fill .wp-block-button__link,
+.elementor-button.elementor-button-primary,
+.woocommerce button.button.alt,
+.woocommerce a.button.alt,
+.woocommerce-page button.button.alt {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold, 600);
+}
+
+.button--primary:hover,
+.btn--primary:hover,
+.elementor-button.elementor-button-primary:hover,
+.woocommerce button.button.alt:hover {
+	background-color: var(--color-accent-surface-sage-dark, #c9dfd0);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+}
+
+/* Disabled State */
+button:disabled,
+.button:disabled,
+.btn:disabled,
+.elementor-button:disabled,
+.woocommerce button.button:disabled,
+button[disabled],
+.button[disabled] {
+	background-color: var(--color-surface-background-alt, #F8FAFC);
+	color: var(--color-text-tertiary, #64748B);
+	border-color: var(--color-border-light, #F1F5F9);
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+/* ========================================
+   SELECTED/ACTIVE STATES - CHIP/TAB/CATEGORY
+   ======================================== */
+
+/**
+ * Unified selected state using sage pastel surface
+ * Covers custom chips, WooCommerce widgets, Elementor category widgets
+ * Matches chips.css specification for consistency
+ */
+
+/* Custom Chips */
+.chip--selected,
+.chip.is-selected,
+.chip[aria-selected="true"],
+.cas-chips .chip--selected,
+.term-chip--selected,
+.filter-chip--selected {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold, 600);
+}
+
+/* WooCommerce Category Widgets */
+.woocommerce .widget_layered_nav_filters .chosen a,
+.woocommerce .widget_product_categories .current-cat > a,
+.woocommerce .widget_product_categories .current-cat-parent > a,
+.woocommerce-widget-layered-nav .chosen a,
+.widget_product_categories .current-cat > a,
+.widget_product_categories .current-cat-parent > a {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold, 600);
+	text-decoration: none;
+}
+
+/* Elementor Category Widgets */
+.elementor-widget-product-categories .current-cat > a,
+.elementor-widget-product-categories .current-cat-parent > a,
+.product-cats .current-cat > a,
+.product-cats .current-cat-parent > a {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold, 600);
+	text-decoration: none;
+}
+
+/* Tabs (WordPress & Elementor) */
+.wp-block-tabs .is-active,
+.elementor-tabs .elementor-active,
+.woocommerce-tabs .active a,
+.ui-tabs .ui-tabs-active a {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold, 600);
+	text-decoration: none;
+}
+
+/* Pagination Active State */
+.pagination .current,
+.page-numbers.current,
+.woocommerce-pagination .page-numbers.current,
+.elementor-pagination .page-numbers.current,
+.wp-block-query-pagination .current {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold, 600);
+}
+
+/* Focus States for Selected Elements */
+.chip--selected:focus-visible,
+.woocommerce .widget_product_categories .current-cat > a:focus-visible,
+.elementor-widget-product-categories .current-cat > a:focus-visible,
+.pagination .current:focus-visible,
+.woocommerce-tabs .active a:focus-visible {
+	outline: 3px solid var(--color-text-primary, #1E293B);
+	outline-offset: 2px;
+	box-shadow: 
+		0 0 0 3px var(--color-surface-background, #FFFFFF),
+		0 0 0 6px rgba(30, 41, 59, 0.15);
+}
+
+/* Hover States for Selected Elements */
+.chip--selected:hover,
+.woocommerce .widget_product_categories .current-cat > a:hover,
+.elementor-widget-product-categories .current-cat > a:hover,
+.pagination .current:hover {
+	background-color: var(--color-accent-surface-sage-dark, #c9dfd0);
+	color: var(--color-text-primary, #1E293B);
+}
+
+/* ========================================
+   UNSELECTED STATES - CHIPS/CATEGORIES
+   ======================================== */
+
+/**
+ * Unselected chips and category links
+ * White background with subtle borders
+ */
+.chip:not(.chip--selected):not(.is-selected):not([aria-selected="true"]),
+.cas-chips .chip:not(.chip--selected),
+.term-chip:not(.term-chip--selected) {
+	background-color: var(--color-surface-background, #FFFFFF);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-default, #E2E8F0);
+	font-weight: var(--font-weight-normal, 400);
+}
+
+.chip:not(.chip--selected):hover,
+.cas-chips .chip:not(.chip--selected):hover {
+	background-color: var(--color-surface-background-alt, #F8FAFC);
+	border-color: var(--color-border-medium, #CBD5E1);
+	box-shadow: 0 1px 3px rgba(30, 41, 59, 0.08);
+}
+
+/* ========================================
+   NOTICES & ALERTS
+   ======================================== */
+
+/**
+ * WordPress and WooCommerce notices
+ * Uses pastel surfaces with neutral text and borders
+ * Maintains AA contrast for all notice types
+ */
+
+/* Info Notices - Mint Pastel */
+.notice,
+.notice-info,
+.woocommerce-info,
+.woocommerce-message,
+.elementor-alert-info,
+.wp-block-notice {
+	background-color: var(--color-accent-surface-mint, #c9e5ea);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-medium, #CBD5E1);
+	border-left-width: 4px;
+	border-left-color: var(--color-text-secondary, #475569);
+	border-radius: var(--radius-md, 8px);
+	padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
+	margin-bottom: var(--spacing-4, 16px);
+}
+
+/* Success Notices - Sage Pastel */
+.notice-success,
+.woocommerce-message,
+.elementor-alert-success,
+.wp-block-notice.is-success {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-medium, #CBD5E1);
+	border-left-width: 4px;
+	border-left-color: var(--color-text-secondary, #475569);
+}
+
+/* Warning Notices - Cream Pastel */
+.notice-warning,
+.woocommerce-notice,
+.elementor-alert-warning,
+.wp-block-notice.is-warning {
+	background-color: var(--color-accent-surface-cream, #f6e7c8);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-medium, #CBD5E1);
+	border-left-width: 4px;
+	border-left-color: var(--color-text-secondary, #475569);
+}
+
+/* Error Notices - Coral Pastel */
+.notice-error,
+.woocommerce-error,
+.elementor-alert-danger,
+.wp-block-notice.is-error {
+	background-color: var(--color-accent-surface-coral, #f2ddda);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-medium, #CBD5E1);
+	border-left-width: 4px;
+	border-left-color: var(--color-text-secondary, #475569);
+}
+
+/* Notice Links */
+.notice a,
+.woocommerce-info a,
+.woocommerce-message a,
+.woocommerce-error a,
+.elementor-alert a {
+	color: var(--color-text-primary, #1E293B);
+	text-decoration: underline;
+	text-decoration-color: var(--color-text-primary, #1E293B);
+	font-weight: var(--font-weight-medium, 500);
+}
+
+.notice a:hover,
+.woocommerce-info a:hover,
+.elementor-alert a:hover {
+	color: var(--color-text-secondary, #475569);
+	text-decoration-color: var(--color-text-secondary, #475569);
+}
+
+/* ========================================
+   BADGES & TAGS
+   ======================================== */
+
+/**
+ * Product badges, sale tags, and category badges
+ * Neutral backgrounds to prevent color overload
+ */
+.badge,
+.woocommerce span.onsale,
+.woocommerce-badge,
+.product-badge,
+.elementor-badge,
+.tag,
+.wp-block-tag-cloud a {
+	background-color: var(--color-surface-background, #FFFFFF);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-default, #E2E8F0);
+	border-radius: var(--radius-md, 8px);
+	padding: var(--spacing-1, 4px) var(--spacing-3, 12px);
+	font-size: var(--font-size-small, 14px);
+	font-weight: var(--font-weight-medium, 500);
+	text-decoration: none;
+	display: inline-block;
+}
+
+.badge:hover,
+.tag:hover,
+.wp-block-tag-cloud a:hover {
+	background-color: var(--color-surface-background-alt, #F8FAFC);
+	border-color: var(--color-border-medium, #CBD5E1);
+	color: var(--color-text-primary, #1E293B);
+}
+
+/* Sale Badge Variant - Coral Pastel */
+.woocommerce span.onsale,
+.badge--sale,
+.product-badge--sale {
+	background-color: var(--color-accent-surface-coral, #f2ddda);
+	color: var(--color-text-primary, #1E293B);
+	border-color: transparent;
+	font-weight: var(--font-weight-semibold, 600);
+}
+
+/* ========================================
+   PAGINATION
+   ======================================== */
+
+/**
+ * Pagination controls across WordPress, WooCommerce, Elementor
+ * Unselected pages: white with borders
+ * Selected page: sage pastel (handled above)
+ */
+.pagination a,
+.page-numbers,
+.woocommerce-pagination a.page-numbers,
+.elementor-pagination a.page-numbers,
+.wp-block-query-pagination a {
+	background-color: var(--color-surface-background, #FFFFFF);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-default, #E2E8F0);
+	border-radius: var(--radius-md, 8px);
+	padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+	text-decoration: none;
+	font-weight: var(--font-weight-normal, 400);
+	transition: 
+		background-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+		border-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+		box-shadow var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.pagination a:hover,
+.page-numbers:hover,
+.woocommerce-pagination a.page-numbers:hover,
+.elementor-pagination a.page-numbers:hover {
+	background-color: var(--color-surface-background-alt, #F8FAFC);
+	border-color: var(--color-border-medium, #CBD5E1);
+	color: var(--color-text-primary, #1E293B);
+	box-shadow: 0 1px 3px rgba(30, 41, 59, 0.08);
+}
+
+.pagination a:focus-visible,
+.page-numbers:focus-visible,
+.woocommerce-pagination a.page-numbers:focus-visible {
+	outline: 3px solid var(--color-text-primary, #1E293B);
+	outline-offset: 2px;
+	box-shadow: 
+		0 0 0 3px var(--color-surface-background, #FFFFFF),
+		0 0 0 6px rgba(30, 41, 59, 0.15);
+}
+
+/* Previous/Next Links */
+.pagination .prev,
+.pagination .next,
+.page-numbers.prev,
+.page-numbers.next,
+.woocommerce-pagination .prev,
+.woocommerce-pagination .next {
+	font-weight: var(--font-weight-medium, 500);
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+
+/**
+ * Form inputs, selects, textareas
+ * Neutral borders and backgrounds for consistency
+ */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+input[type="password"],
+input[type="url"],
+textarea,
+select,
+.woocommerce input.input-text,
+.woocommerce select,
+.woocommerce textarea,
+.elementor-field {
+	background-color: var(--color-surface-background, #FFFFFF);
+	color: var(--color-text-primary, #1E293B);
+	border: 1px solid var(--color-border-default, #E2E8F0);
+	border-radius: var(--radius-md, 8px);
+	padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+	font-family: var(--font-family-base, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+	font-size: var(--font-size-body, 16px);
+	line-height: var(--line-height-body, 1.6);
+	transition: 
+		border-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+		box-shadow var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.woocommerce input.input-text:focus,
+.elementor-field:focus {
+	border-color: var(--color-text-primary, #1E293B);
+	outline: none;
+	box-shadow: 
+		0 0 0 3px var(--color-surface-background, #FFFFFF),
+		0 0 0 4px rgba(30, 41, 59, 0.15);
+}
+
+input::placeholder,
+textarea::placeholder,
+.woocommerce input.input-text::placeholder {
+	color: var(--color-text-tertiary, #64748B);
+	opacity: 1;
+}
+
+/* ========================================
+   CHECKBOXES & RADIOS
+   ======================================== */
+
+/**
+ * Custom styled checkboxes and radio buttons
+ * Sage pastel for checked state
+ */
+input[type="checkbox"],
+input[type="radio"],
+.woocommerce input[type="checkbox"],
+.woocommerce input[type="radio"] {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid var(--color-border-default, #E2E8F0);
+	background-color: var(--color-surface-background, #FFFFFF);
+	cursor: pointer;
+	transition: 
+		background-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+		border-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+input[type="checkbox"] {
+	border-radius: var(--radius-sm, 4px);
+}
+
+input[type="radio"] {
+	border-radius: 50%;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked,
+.woocommerce input[type="checkbox"]:checked,
+.woocommerce input[type="radio"]:checked {
+	background-color: var(--color-accent-surface-sage, #d9e8db);
+	border-color: var(--color-text-primary, #1E293B);
+}
+
+input[type="checkbox"]:checked::before,
+input[type="radio"]:checked::before {
+	content: '';
+	display: block;
+	width: 12px;
+	height: 12px;
+	background-color: var(--color-text-primary, #1E293B);
+	margin: 2px;
+}
+
+input[type="checkbox"]:checked::before {
+	border-radius: 2px;
+}
+
+input[type="radio"]:checked::before {
+	border-radius: 50%;
+}
+
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+	outline: 3px solid var(--color-text-primary, #1E293B);
+	outline-offset: 2px;
+	box-shadow: 
+		0 0 0 3px var(--color-surface-background, #FFFFFF),
+		0 0 0 6px rgba(30, 41, 59, 0.15);
+}
+
+/* ========================================
+   BREADCRUMBS
+   ======================================== */
+
+/**
+ * Breadcrumb navigation
+ * Neutral colors with current page in sage pastel
+ */
+.breadcrumbs,
+.woocommerce-breadcrumb,
+.elementor-breadcrumbs,
+.wp-block-breadcrumbs {
+	color: var(--color-text-secondary, #475569);
+	font-size: var(--font-size-small, 14px);
+}
+
+.breadcrumbs a,
+.woocommerce-breadcrumb a,
+.elementor-breadcrumbs a {
+	color: var(--color-text-secondary, #475569);
+	text-decoration: none;
+}
+
+.breadcrumbs a:hover,
+.woocommerce-breadcrumb a:hover,
+.elementor-breadcrumbs a:hover {
+	color: var(--color-text-primary, #1E293B);
+	text-decoration: underline;
+}
+
+.breadcrumbs .current,
+.woocommerce-breadcrumb .current,
+.elementor-breadcrumbs .current {
+	color: var(--color-text-primary, #1E293B);
+	font-weight: var(--font-weight-medium, 500);
+}
+
+/* ========================================
+   PREFERS REDUCED MOTION
+   ======================================== */
+
+/**
+ * Respect user motion preferences
+ * Disable transitions and animations for users who prefer reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+	
+	/* Still allow opacity and transform for essential state changes */
+	button,
+	.button,
+	.btn,
+	a,
+	input,
+	select,
+	textarea {
+		transition-property: opacity, transform !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* ========================================
+   SATURATED COLOR PREVENTION
+   ======================================== */
+
+/**
+ * Block common saturated red/pink colors that might appear from plugins
+ * Replace with C1 interaction patterns as specified
+ */
+
+/* Prevent saturated red/pink hover states */
+*:hover {
+	/* Block common saturated hues */
+	background-color: unset;
+}
+
+/* Specifically target elements that might get saturated colors */
+button:hover:not(.button--primary),
+.button:hover:not(.button--primary),
+a:hover,
+.elementor-button:hover,
+.woocommerce button.button:hover {
+	/* Ensure no saturated colors can override C1 patterns */
+	background-color: var(--color-surface-background-alt, #F8FAFC);
+	color: var(--color-text-primary, #1E293B);
+}
+
+/* Links should only use underline, never background colors */
+a:hover:not(.button):not(.btn):not(.elementor-button) {
+	background-color: transparent !important;
+	text-decoration: underline;
+	color: var(--color-text-secondary, #475569);
+}
+
+/* Override any inline saturated color styles that might appear */
+[style*="#e11d48"],
+[style*="#db2777"], 
+[style*="#d946ef"],
+[style*="#be185d"],
+[style*="#ff3366"],
+[style*="#d13a6a"],
+[style*="background-color: #e11d48"],
+[style*="background-color: #db2777"],
+[style*="background-color: #d946ef"],
+[style*="background-color: #be185d"],
+[style*="background-color: #ff3366"],
+[style*="background-color: #d13a6a"],
+[style*="color: #e11d48"],
+[style*="color: #db2777"],
+[style*="color: #d946ef"],
+[style*="color: #be185d"],
+[style*="color: #ff3366"],
+[style*="color: #d13a6a"] {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: var(--color-border-default, #E2E8F0) !important;
+}
+
+/* Block saturated colors in hover states */
+[style*="#e11d48"]:hover,
+[style*="#db2777"]:hover,
+[style*="#d946ef"]:hover,
+[style*="#be185d"]:hover,
+[style*="#ff3366"]:hover,
+[style*="#d13a6a"]:hover {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	opacity: 0.9 !important;
+}
+
+/* ========================================
+   ELEMENTOR HOVER FILL PREVENTION
+   ======================================== */
+
+/**
+ * Block Elementor common hover fills via higher-specificity neutral fallbacks
+ * Prevents Elementor widgets from injecting saturated backgrounds
+ */
+
+/* Elementor buttons - prevent saturated fills */
+.elementor-button-wrapper .elementor-button,
+.elementor-widget-button .elementor-button,
+.elementor-button-link,
+.elementor-widget .elementor-button {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border: 2px solid var(--color-border-default, #E2E8F0) !important;
+	transition: opacity var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)) !important;
+}
+
+.elementor-button-wrapper .elementor-button:hover,
+.elementor-widget-button .elementor-button:hover,
+.elementor-widget .elementor-button:hover {
+	opacity: 0.92 !important; /* −8% opacity per pattern */
+	background-color: var(--color-surface-background, #FFFFFF) !important; /* Keep same background */
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same text color */
+}
+
+/* Elementor primary button variant */
+.elementor-button.elementor-button-primary,
+.elementor-button.elementor-size-lg,
+.elementor-widget .elementor-button-primary {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: transparent !important;
+}
+
+.elementor-button.elementor-button-primary:hover,
+.elementor-button.elementor-size-lg:hover,
+.elementor-widget .elementor-button-primary:hover {
+	opacity: 0.92 !important;
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important; /* Keep sage */
+}
+
+/* Elementor text links - enforce underline pattern */
+.elementor-widget-text-editor a,
+.elementor-widget-theme-post-content a,
+.elementor-text-editor a,
+.elementor-widget a:not(.elementor-button) {
+	color: var(--color-text-primary, #1E293B) !important;
+	text-decoration: underline !important;
+	text-decoration-color: var(--color-border-default, #E2E8F0) !important;
+	background-color: transparent !important;
+}
+
+.elementor-widget-text-editor a:hover,
+.elementor-widget-theme-post-content a:hover,
+.elementor-text-editor a:hover,
+.elementor-widget a:not(.elementor-button):hover {
+	color: var(--color-text-primary, #1E293B) !important; /* NO color change */
+	text-decoration-color: currentColor !important; /* Underline visible */
+	text-decoration-thickness: 2px !important;
+	background-color: transparent !important; /* NO filled background */
+}
+
+/* Elementor icon boxes - prevent colored backgrounds */
+.elementor-widget-icon-box .elementor-icon-box-wrapper,
+.elementor-icon-box-content {
+	background-color: transparent !important;
+}
+
+/* Elementor tabs - enforce sage pastel for active */
+.elementor-tabs .elementor-tab-title.elementor-active,
+.elementor-widget-tabs .elementor-tab-title.elementor-active {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: transparent !important;
+}
+
+/* Elementor accordions - enforce underline on hover */
+.elementor-accordion .elementor-tab-title,
+.elementor-toggle .elementor-tab-title {
+	color: var(--color-text-primary, #1E293B) !important;
+	background-color: transparent !important;
+}
+
+.elementor-accordion .elementor-tab-title:hover,
+.elementor-toggle .elementor-tab-title:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* NO color change */
+	text-decoration: underline !important;
+	background-color: transparent !important; /* NO filled background */
+}
+
+/* ========================================
+   LINK HOVER NORMALIZATION (CONFLICTING DOWNSTREAM STYLES)
+   ======================================== */
+
+/**
+ * Normalize link hover to underline if conflicting style detected
+ * High-specificity selectors to override any downstream interference
+ */
+
+/* WordPress core content areas */
+.entry-content a:hover,
+.page-content a:hover,
+.post-content a:hover,
+.comment-content a:hover,
+article a:hover,
+.wp-block-post-content a:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline !important;
+	text-decoration-color: currentColor !important;
+	text-decoration-thickness: 2px !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	box-shadow: none !important;
+}
+
+/* Widget areas */
+.widget a:hover,
+.sidebar a:hover,
+.footer-widget a:hover,
+aside a:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline !important;
+	text-decoration-color: currentColor !important;
+	background-color: transparent !important;
+}
+
+/* WooCommerce product descriptions */
+.woocommerce-product-details__short-description a:hover,
+.woocommerce-Tabs-panel a:hover,
+.product-description a:hover,
+.woocommerce div.product .woocommerce-tabs a:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline !important;
+	text-decoration-color: currentColor !important;
+	background-color: transparent !important;
+}
+
+/* Menu/navigation links - highest specificity */
+nav a:hover,
+.navigation a:hover,
+.menu a:hover,
+.nav-menu a:hover,
+.site-navigation a:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline !important;
+	text-decoration-color: currentColor !important;
+	background-color: transparent !important;
+	background-image: none !important;
+}
+
+/* Override any :not() selector bypass attempts */
+a:link:hover,
+a:visited:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline !important;
+	background-color: transparent !important;
+}
+
+/* ========================================
+   UTILITY CLASSES - C1 TOKEN SHORTCUTS
+   ======================================== */
+
+/**
+ * Provide utility classes for manual C1 token application
+ * Use these in HTML/PHP when you need to enforce tokens directly
+ * 
+ * Usage:
+ * <div class="ink-900">Primary text</div>
+ * <button class="surface-pastel">Pastel button</button>
+ */
+
+/* INK UTILITIES - Text colors */
+.ink-900,
+.text-ink-900,
+.color-ink-900 {
+	color: var(--color-text-primary, #1E293B) !important; /* slate-800 */
+}
+
+.ink-700,
+.text-ink-700,
+.color-ink-700 {
+	color: var(--color-text-secondary, #475569) !important; /* slate-600 */
+}
+
+.ink-500,
+.text-ink-500,
+.color-ink-500 {
+	color: var(--color-text-tertiary, #64748B) !important; /* slate-500 */
+}
+
+/* SURFACE UTILITIES - Background colors */
+.surface-white,
+.bg-surface-white,
+.background-white {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+}
+
+.surface-light,
+.bg-surface-light,
+.background-light {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+}
+
+/* PASTEL UTILITIES - Pastel backgrounds with automatic ink text */
+.surface-pastel,
+.bg-pastel,
+.background-pastel {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important; /* Default sage */
+	color: var(--color-text-primary, #1E293B) !important;
+}
+
+.surface-pastel-sage,
+.bg-pastel-sage {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+}
+
+.surface-pastel-mint,
+.bg-pastel-mint {
+	background-color: var(--color-accent-mint, #c9e5ea) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+}
+
+.surface-pastel-coral,
+.bg-pastel-coral {
+	background-color: var(--color-accent-surface-coral, #f2ddda) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+}
+
+.surface-pastel-lavender,
+.bg-pastel-lavender {
+	background-color: var(--color-accent-lavender, #cec7ee) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+}
+
+.surface-pastel-cream,
+.bg-pastel-cream {
+	background-color: var(--color-accent-surface-cream, #f6e7c8) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+}
+
+/* BORDER UTILITIES */
+.border-default,
+.border-neutral {
+	border-color: var(--color-border-default, #E2E8F0) !important;
+}
+
+.border-medium {
+	border-color: var(--color-border-medium, #CBD5E1) !important;
+}
+
+.border-dark {
+	border-color: var(--color-border-dark, #94A3B8) !important;
+}
+
+/* INTERACTION UTILITIES - For manual pattern enforcement */
+.hover-underline-only:hover {
+	text-decoration: underline !important;
+	text-decoration-color: currentColor !important;
+	color: inherit !important; /* Keep same color */
+	background-color: transparent !important;
+}
+
+.hover-opacity:hover {
+	opacity: 0.92 !important; /* −8% per pattern */
+}
+
+.focus-outline:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	box-shadow: none !important;
+}
+
+/* COMBO UTILITIES - Common patterns */
+.c1-link {
+	color: var(--color-text-primary, #1E293B) !important;
+	text-decoration: underline !important;
+	text-decoration-color: var(--color-border-default, #E2E8F0) !important;
+}
+
+.c1-link:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* NO color change */
+	text-decoration-color: currentColor !important;
+	background-color: transparent !important;
+}
+
+.c1-button {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border: 2px solid var(--color-border-default, #E2E8F0) !important;
+}
+
+.c1-button:hover {
+	opacity: 0.92 !important;
+}
+
+.c1-button-primary {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: transparent !important;
+}
+
+.c1-button-primary:hover {
+	opacity: 0.92 !important;
+}
+
+/* ========================================
+   INLINE STYLE OVERRIDES (!important)
+   ======================================== */
+
+/**
+ * EMERGENCY OVERRIDES - ENABLED FOR BACKSTOP PROTECTION
+ * 
+ * These rules provide the final layer of protection against inline styles
+ * and plugin-injected colors that cannot be removed at the source.
+ * 
+ * When this helps:
+ * - Third-party plugins injecting inline style="background-color: #2563EB"
+ * - Page builder widgets with hardcoded colors in PHP templates
+ * - Legacy shortcodes with inline color attributes
+ * - Elementor widgets with color controls set incorrectly
+ * 
+ * WARNING: !important reduces maintainability but necessary for backstop protection.
+ */
+
+/* High-specificity Elementor button overrides */
+.elementor-button[style*="background"],
+.elementor-widget-button .elementor-button[style],
+.woocommerce button.button[style],
+.woocommerce a.button[style],
+button[style*="background"],
+.button[style*="background"],
+a.button[style*="background"] {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: var(--color-border-default, #E2E8F0) !important;
+}
+
+.elementor-button[style*="background"]:hover,
+.woocommerce button.button[style]:hover,
+button[style*="background"]:hover,
+.button[style*="background"]:hover {
+	opacity: 0.92 !important;
+	background-color: var(--color-surface-background, #FFFFFF) !important; /* Keep same */
+}
+
+/* Primary button variant with inline styles */
+.button--primary[style],
+.elementor-button.elementor-button-primary[style],
+.woocommerce button.button.alt[style] {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: transparent !important;
+}
+
+/* Selected states with inline styles */
+.current-cat > a[style],
+.current-menu-item > a[style],
+.pagination .current[style],
+[aria-selected="true"][style],
+.chip--selected[style] {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: transparent !important;
+}
+
+/* Links with inline color styles */
+a[style*="color"]:not(.button):not(.btn):not(.elementor-button) {
+	color: var(--color-text-primary, #1E293B) !important;
+	text-decoration: underline !important;
+}
+
+a[style*="color"]:hover:not(.button):not(.btn):not(.elementor-button) {
+	color: var(--color-text-primary, #1E293B) !important; /* NO color change */
+	text-decoration-color: currentColor !important;
+	background-color: transparent !important;
+}
+
+/* Block any inline background-color on links */
+a[style*="background"]:not(.button):not(.btn):not(.elementor-button) {
+	background-color: transparent !important;
+}
+
+a[style*="background"]:hover:not(.button):not(.btn):not(.elementor-button) {
+	background-color: transparent !important;
+	text-decoration: underline !important;
+}
+
+/* ========================================
+   PLUGIN CSS OVERRIDES
+   ======================================== */
+
+/**
+ * Query Monitor Plugin Override
+ * 
+ * Query Monitor injects high-specificity CSS rules (specificity [0,15,34,27])
+ * that override our C1 button styles in :hover and :active states.
+ * 
+ * Block these rules to maintain C1 opacity-only hover behavior.
+ */
+#query-monitor-main .qm button,
+#query-monitor-main .qm button:hover,
+#query-monitor-main .qm button:active,
+#query-monitor-main .qm button:focus,
+#query-monitor-main .qm a,
+#query-monitor-main .qm a:hover,
+#query-monitor-main .qm a:active,
+#query-monitor-main .qm a:focus,
+#query-monitor-main .qm button.qm-filter-trigger,
+#query-monitor-main .qm button.qm-filter-trigger:hover,
+#query-monitor-main .qm button.qm-filter-trigger:active,
+#query-monitor-main .qm button.qm-filter-trigger code,
+#query-monitor-main .qm button.qm-filter-trigger code:hover,
+#query-monitor-main .qm button.qm-filter-trigger code:active,
+#query-monitor-main .qm tbody .qm-warn a code,
+#query-monitor-main .qm tbody .qm-warn a code:hover,
+#query-monitor-main .qm tbody .qm-warn a code:active,
+#query-monitor-main .qm a code,
+#query-monitor-main .qm a code:hover,
+#query-monitor-main .qm a code:active {
+	color: inherit !important;
+	background-color: transparent !important;
+}
+
+/* Query Monitor title button */
+#query-monitor-main #qm-title button,
+#query-monitor-main #qm-title button:hover,
+#query-monitor-main #qm-title button:active {
+	color: var(--color-text-primary, #1E293B) !important;
+	background-color: transparent !important;
+}
+
+/* ========================================
+   END COLOR GUARD
+   ======================================== */

@@ -1,0 +1,248 @@
+# Copyright (C) 2025 casAhorro
+# This file is distributed under the same license as the Hello Elementor Child package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Hello Elementor Child 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/hello-elementor-child\n"
+"POT-Creation-Date: 2025-11-03 12:00+0000\n"
+"PO-Revision-Date: 2025-11-03 12:00+0000\n"
+"Last-Translator: casAhorro Team\n"
+"Language-Team: Spanish (Chile)\n"
+"Language: es_CL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: casAhorro Localization\n"
+
+#: functions.php:210
+msgid "Menú principal"
+msgstr "Menú principal"
+
+#: functions.php:211
+msgid "Menú de utilidad"
+msgstr "Menú de utilidad"
+
+#: woocommerce/archive-product.php:63
+#, php-format
+msgid "%s producto"
+msgid_plural "%s productos"
+msgstr[0] "%s producto"
+msgstr[1] "%s productos"
+
+#: woocommerce/archive-product.php:148
+msgid "Intenta ajustar los filtros o realiza una nueva búsqueda."
+msgstr "Intenta ajustar los filtros o realiza una nueva búsqueda."
+
+#: woocommerce/archive-product.php:156
+msgid "Limpiar todos los filtros"
+msgstr "Limpiar todos los filtros"
+
+#: partials/plp/filters-drawer.php:118
+msgid "Filtros aplicados:"
+msgstr "Filtros aplicados:"
+
+#: partials/plp/filters-drawer.php:158
+msgid "Filtros"
+msgstr "Filtros"
+
+#: partials/plp/filters-drawer.php:163
+msgid "Cerrar filtros"
+msgstr "Cerrar filtros"
+
+#: partials/plp/filters-drawer.php:380
+msgid "Limpiar filtros"
+msgstr "Limpiar filtros"
+
+#: partials/plp/filters-drawer.php:387
+msgid "Aplicar filtros"
+msgstr "Aplicar filtros"
+
+#: template-parts/search/card-product.php:55
+msgid "Ver producto"
+msgstr "Ver producto"
+
+#: template-parts/search/card-post.php:55
+msgid "Leer más"
+msgstr "Leer más"
+
+#: search.php:30
+msgid "Resultados de búsqueda"
+msgstr "Resultados de búsqueda"
+
+#: search.php:50
+#, php-format
+msgid "Se encontraron %s resultados"
+msgstr "Se encontraron %s resultados"
+
+#: search.php:70
+msgid "No se encontraron resultados"
+msgstr "No se encontraron resultados"
+
+#: search.php:75
+msgid "Intenta con otros términos de búsqueda"
+msgstr "Intenta con otros términos de búsqueda"
+
+# Contact form strings
+msgid "Nombre"
+msgstr "Nombre"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Mensaje"
+msgstr "Mensaje"
+
+msgid "Enviar"
+msgstr "Enviar"
+
+msgid "Tu mensaje ha sido enviado"
+msgstr "Tu mensaje ha sido enviado"
+
+msgid "Error al enviar el mensaje"
+msgstr "Error al enviar el mensaje"
+
+# WooCommerce overrides (handled by gettext filter)
+msgid "Add to cart"
+msgstr "Agregar al carro"
+
+msgid "Select options"
+msgstr "Seleccionar opciones"
+
+msgid "Sale!"
+msgstr "¡Oferta!"
+
+msgid "Read more"
+msgstr "Leer más"
+
+msgid "Out of stock"
+msgstr "Agotado"
+
+msgid "In stock"
+msgstr "Disponible"
+
+msgid "View products"
+msgstr "Ver productos"
+
+msgid "Quick view"
+msgstr "Vista rápida"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Additional information"
+msgstr "Información adicional"
+
+msgid "Reviews"
+msgstr "Reseñas"
+
+msgid "Related products"
+msgstr "Productos relacionados"
+
+msgid "You may also like"
+msgstr "También te puede gustar"
+
+msgid "Cart"
+msgstr "Carro"
+
+msgid "Your cart is empty"
+msgstr "Tu carro está vacío"
+
+msgid "Continue shopping"
+msgstr "Seguir comprando"
+
+msgid "Update cart"
+msgstr "Actualizar carro"
+
+msgid "Proceed to checkout"
+msgstr "Proceder al pago"
+
+msgid "Remove"
+msgstr "Eliminar"
+
+msgid "Quantity"
+msgstr "Cantidad"
+
+msgid "Subtotal"
+msgstr "Subtotal"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Checkout"
+msgstr "Pago"
+
+msgid "Billing details"
+msgstr "Datos de facturación"
+
+msgid "Shipping details"
+msgstr "Datos de envío"
+
+msgid "Your order"
+msgstr "Tu pedido"
+
+msgid "Product"
+msgstr "Producto"
+
+msgid "Price"
+msgstr "Precio"
+
+msgid "Place order"
+msgstr "Realizar pedido"
+
+msgid "My account"
+msgstr "Mi cuenta"
+
+msgid "Dashboard"
+msgstr "Panel"
+
+msgid "Orders"
+msgstr "Pedidos"
+
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+msgid "Login"
+msgstr "Iniciar sesión"
+
+msgid "Register"
+msgstr "Registrarse"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "No products found"
+msgstr "No se encontraron productos"
+
+msgid "Filter"
+msgstr "Filtrar"
+
+msgid "Apply filters"
+msgstr "Aplicar filtros"
+
+msgid "Clear filters"
+msgstr "Limpiar filtros"
+
+msgid "Category"
+msgstr "Categoría"
+
+msgid "Categories"
+msgstr "Categorías"
+
+msgid "Compare"
+msgstr "Comparar"
+
+msgid "Compare products"
+msgstr "Comparar productos"
+
+msgid "Add to compare"
+msgstr "Agregar a comparar"
+
+msgid "Free shipping"
+msgstr "Envío gratis"
+
+msgid "Contact us"
+msgstr "Contáctanos"
+
+msgid "Need help?"
+msgstr "¿Necesitas ayuda?"

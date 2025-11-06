@@ -1,0 +1,513 @@
+/**
+ * Flow Buttons - Primary/Secondary/Ghost Variants
+ * 
+ * System-compliant button styles for hero CTAs and flow triggers
+ * Resists Elementor inline style overrides via high specificity
+ * 
+ * Design Tokens:
+ * - Size: Medium (var(--spacing-10, 40px) height)
+ * - Radii: 16-24px (var(--radius-lg, 20px))
+ * - Focus: 3px ring (var(--color-text-primary))
+ * - Transitions: 180-220ms (200ms default)
+ * 
+ * Class Pattern: .flow-button.primary, .flow-button.secondary, .flow-button.ghost
+ * Also supports: .flow-button--primary, .flow-button--secondary, .flow-button--ghost
+ * 
+ * @package HelloElementorChild
+ * @version 1.0.0
+ */
+
+/* ========================================
+   FLOW BUTTON - BASE STYLES
+   ======================================== */
+
+/**
+ * Base flow button
+ * Common styles shared by all variants
+ * High specificity to override Elementor inline styles
+ */
+
+button.flow-button,
+a.flow-button,
+.elementor-button.flow-button,
+.flow-button.elementor-button {
+	/* Layout */
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: var(--spacing-2, 8px) !important;
+	
+	/* Sizing */
+	min-height: var(--spacing-10, 40px) !important;
+	padding: var(--spacing-3, 12px) var(--spacing-6, 24px) !important;
+	
+	/* Typography */
+	font-family: var(--font-family-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif) !important;
+	font-size: var(--font-size-base, 16px) !important;
+	font-weight: var(--font-weight-semibold, 600) !important;
+	line-height: var(--line-height-tight, 1.25) !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	white-space: nowrap !important;
+	
+	/* Border & Radius */
+	border: 2px solid transparent !important;
+	border-radius: var(--radius-lg, 20px) !important; /* 16-24px range */
+	
+	/* Visual */
+	cursor: pointer !important;
+	box-shadow: none !important;
+	
+	/* Transitions (180-220ms range) */
+	transition: 
+		background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+		border-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+		color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+		box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+		transform 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+	
+	/* Prevent Elementor overrides */
+	background-image: none !important;
+	background-size: auto !important;
+	text-shadow: none !important;
+	letter-spacing: normal !important;
+	
+	/* Ensure clickable */
+	pointer-events: auto !important;
+	user-select: none !important;
+}
+
+/* Remove Elementor default button styles */
+.elementor-button.flow-button::before,
+.elementor-button.flow-button::after {
+	display: none !important;
+}
+
+/* ========================================
+   PRIMARY VARIANT - HERO CTA
+   ======================================== */
+
+/**
+ * Primary flow button - high emphasis
+ * Used for main hero CTA (e.g., "Abrir asistente")
+ * Supports both .primary and .flow-button--primary
+ */
+
+button.flow-button.primary,
+a.flow-button.primary,
+.elementor-button.flow-button.primary,
+.flow-button.elementor-button.primary,
+button.flow-button--primary,
+a.flow-button--primary,
+.elementor-button.flow-button--primary,
+.flow-button.elementor-button--primary {
+	/* Colors */
+	background-color: var(--color-primary, #2563EB) !important;
+	color: var(--color-on-primary, #FFFFFF) !important;
+	border-color: var(--color-primary, #2563EB) !important;
+}
+
+/* Hover state */
+button.flow-button.primary:hover,
+a.flow-button.primary:hover,
+button.flow-button--primary:hover,
+a.flow-button--primary:hover {
+	background-color: var(--color-primary-hover, #1D4ED8) !important;
+	border-color: var(--color-primary-hover, #1D4ED8) !important;
+	color: var(--color-on-primary, #FFFFFF) !important;
+	transform: translateY(-1px) !important;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+}
+
+/* Active/pressed state */
+button.flow-button.primary:active,
+a.flow-button.primary:active,
+button.flow-button--primary:active,
+a.flow-button--primary:active {
+	background-color: var(--color-primary-active, #1E40AF) !important;
+	border-color: var(--color-primary-active, #1E40AF) !important;
+	transform: translateY(0) !important;
+	box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15) !important;
+}
+
+/* Focus state - visible ring */
+button.flow-button.primary:focus-visible,
+a.flow-button.primary:focus-visible,
+button.flow-button--primary:focus-visible,
+a.flow-button--primary:focus-visible {
+	outline: 3px solid var(--color-text-primary, #1E293B) !important;
+	outline-offset: 2px !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Disabled state */
+button.flow-button.primary:disabled,
+a.flow-button.primary[aria-disabled="true"],
+button.flow-button--primary:disabled,
+a.flow-button--primary[aria-disabled="true"] {
+	background-color: var(--color-surface-disabled, #E2E8F0) !important;
+	border-color: var(--color-surface-disabled, #E2E8F0) !important;
+	color: var(--color-text-disabled, #94A3B8) !important;
+	cursor: not-allowed !important;
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+/* ========================================
+   SECONDARY VARIANT - ALTERNATIVE CTA
+   ======================================== */
+
+/**
+ * Secondary flow button - medium emphasis
+ * Used for alternative CTAs (e.g., "Learn More")
+ */
+
+button.flow-button.secondary,
+a.flow-button.secondary,
+.elementor-button.flow-button.secondary,
+.flow-button.elementor-button.secondary,
+button.flow-button--secondary,
+a.flow-button--secondary,
+.elementor-button.flow-button--secondary,
+.flow-button.elementor-button--secondary {
+	/* Colors */
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-primary, #2563EB) !important;
+	border-color: var(--color-primary, #2563EB) !important;
+}
+
+/* Hover state */
+button.flow-button.secondary:hover,
+a.flow-button.secondary:hover,
+button.flow-button--secondary:hover,
+a.flow-button--secondary:hover {
+	background-color: var(--color-primary-surface, #EFF6FF) !important;
+	border-color: var(--color-primary-hover, #1D4ED8) !important;
+	color: var(--color-primary-hover, #1D4ED8) !important;
+	transform: translateY(-1px) !important;
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15) !important;
+}
+
+/* Active/pressed state */
+button.flow-button.secondary:active,
+a.flow-button.secondary:active,
+button.flow-button--secondary:active,
+a.flow-button--secondary:active {
+	background-color: var(--color-primary-surface, #EFF6FF) !important;
+	border-color: var(--color-primary-active, #1E40AF) !important;
+	color: var(--color-primary-active, #1E40AF) !important;
+	transform: translateY(0) !important;
+	box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Focus state */
+button.flow-button.secondary:focus-visible,
+a.flow-button.secondary:focus-visible,
+button.flow-button--secondary:focus-visible,
+a.flow-button--secondary:focus-visible {
+	outline: 3px solid var(--color-text-primary, #1E293B) !important;
+	outline-offset: 2px !important;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Disabled state */
+button.flow-button.secondary:disabled,
+a.flow-button.secondary[aria-disabled="true"],
+button.flow-button--secondary:disabled,
+a.flow-button--secondary[aria-disabled="true"] {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	border-color: var(--color-border-default, #E2E8F0) !important;
+	color: var(--color-text-disabled, #94A3B8) !important;
+	cursor: not-allowed !important;
+	transform: none !important;
+	box-shadow: none !important;
+}
+
+/* ========================================
+   GHOST VARIANT - SUBTLE ACTION
+   ======================================== */
+
+/**
+ * Ghost flow button - low emphasis
+ * Used for tertiary actions (e.g., "Cancel", "Skip")
+ */
+
+button.flow-button.ghost,
+a.flow-button.ghost,
+.elementor-button.flow-button.ghost,
+.flow-button.elementor-button.ghost,
+button.flow-button--ghost,
+a.flow-button--ghost,
+.elementor-button.flow-button--ghost,
+.flow-button.elementor-button--ghost {
+	/* Colors */
+	background-color: transparent !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	border-color: transparent !important;
+}
+
+/* Hover state */
+button.flow-button.ghost:hover,
+a.flow-button.ghost:hover,
+button.flow-button--ghost:hover,
+a.flow-button--ghost:hover {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	border-color: transparent !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	transform: translateY(-1px) !important;
+}
+
+/* Active/pressed state */
+button.flow-button.ghost:active,
+a.flow-button.ghost:active,
+button.flow-button--ghost:active,
+a.flow-button--ghost:active {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	transform: translateY(0) !important;
+}
+
+/* Focus state */
+button.flow-button.ghost:focus-visible,
+a.flow-button.ghost:focus-visible,
+button.flow-button--ghost:focus-visible,
+a.flow-button--ghost:focus-visible {
+	outline: 3px solid var(--color-text-primary, #1E293B) !important;
+	outline-offset: 2px !important;
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+}
+
+/* Disabled state */
+button.flow-button.ghost:disabled,
+a.flow-button.ghost[aria-disabled="true"],
+button.flow-button--ghost:disabled,
+a.flow-button--ghost[aria-disabled="true"] {
+	background-color: transparent !important;
+	color: var(--color-text-disabled, #94A3B8) !important;
+	cursor: not-allowed !important;
+	transform: none !important;
+}
+
+/* ========================================
+   SIZE VARIANTS (OPTIONAL)
+   ======================================== */
+
+/**
+ * Large flow button (hero CTA)
+ * Increased padding and font size
+ */
+
+button.flow-button.large,
+a.flow-button.large,
+button.flow-button--large,
+a.flow-button--large {
+	min-height: var(--spacing-12, 48px) !important;
+	padding: var(--spacing-4, 16px) var(--spacing-8, 32px) !important;
+	font-size: var(--font-size-lg, 18px) !important;
+}
+
+/**
+ * Small flow button (compact UI)
+ * Reduced padding and font size
+ */
+
+button.flow-button.small,
+a.flow-button.small,
+button.flow-button--small,
+a.flow-button--small {
+	min-height: var(--spacing-8, 32px) !important;
+	padding: var(--spacing-2, 8px) var(--spacing-4, 16px) !important;
+	font-size: var(--font-size-sm, 14px) !important;
+}
+
+/* ========================================
+   ICON SUPPORT
+   ======================================== */
+
+/**
+ * Icon inside flow button
+ * Ensures proper spacing and alignment
+ */
+
+.flow-button__icon {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 20px !important;
+	height: 20px !important;
+	flex-shrink: 0 !important;
+}
+
+.flow-button__icon svg {
+	width: 100% !important;
+	height: 100% !important;
+	fill: currentColor !important;
+}
+
+/* Icon-only button (no text) */
+.flow-button.icon-only,
+.flow-button--icon-only {
+	padding: var(--spacing-3, 12px) !important;
+	min-width: var(--spacing-10, 40px) !important;
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+/**
+ * Loading/processing state
+ * Adds spinner and disables interaction
+ */
+
+.flow-button.loading,
+.flow-button--loading,
+.flow-button[data-loading="true"] {
+	position: relative !important;
+	color: transparent !important;
+	pointer-events: none !important;
+	cursor: wait !important;
+}
+
+.flow-button.loading::after,
+.flow-button--loading::after,
+.flow-button[data-loading="true"]::after {
+	content: '' !important;
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	width: 16px !important;
+	height: 16px !important;
+	margin: -8px 0 0 -8px !important;
+	border: 2px solid currentColor !important;
+	border-right-color: transparent !important;
+	border-radius: 50% !important;
+	animation: flow-button-spin 600ms linear infinite !important;
+}
+
+@keyframes flow-button-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+/**
+ * Disable animations for users who prefer reduced motion
+ */
+
+@media (prefers-reduced-motion: reduce) {
+	button.flow-button,
+	a.flow-button {
+		transition: none !important;
+		transform: none !important;
+	}
+	
+	button.flow-button:hover,
+	a.flow-button:hover {
+		transform: none !important;
+	}
+	
+	.flow-button.loading::after,
+	.flow-button--loading::after,
+	.flow-button[data-loading="true"]::after {
+		animation: none !important;
+		border-color: currentColor !important;
+		opacity: 0.5 !important;
+	}
+}
+
+/* ========================================
+   HIGH CONTRAST MODE SUPPORT
+   ======================================== */
+
+/**
+ * Ensure buttons remain visible in forced colors mode
+ */
+
+@media (forced-colors: active) {
+	button.flow-button,
+	a.flow-button {
+		border-color: ButtonText !important;
+		color: ButtonText !important;
+		background-color: ButtonFace !important;
+	}
+	
+	button.flow-button:hover,
+	a.flow-button:hover {
+		border-color: SelectedItem !important;
+		color: SelectedItemText !important;
+		background-color: SelectedItem !important;
+	}
+	
+	button.flow-button:focus-visible,
+	a.flow-button:focus-visible {
+		outline-color: Highlight !important;
+	}
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+/**
+ * Simplify buttons for printing
+ */
+
+@media print {
+	button.flow-button,
+	a.flow-button {
+		background-color: transparent !important;
+		color: #000 !important;
+		border: 1px solid #000 !important;
+		box-shadow: none !important;
+		transform: none !important;
+	}
+	
+	/* Hide ghost buttons in print */
+	button.flow-button.ghost,
+	a.flow-button.ghost {
+		display: none !important;
+	}
+}
+
+/* ========================================
+   ELEMENTOR SPECIFICITY OVERRIDES
+   ======================================== */
+
+/**
+ * Nuclear option: Override Elementor inline styles
+ * Use only if Elementor Style panel settings persist
+ */
+
+.elementor-widget-button .flow-button,
+.elementor-button-wrapper .flow-button,
+.elementor-element .flow-button {
+	/* Override Elementor colors */
+	background-color: inherit !important;
+	color: inherit !important;
+	border-color: inherit !important;
+	
+	/* Override Elementor typography */
+	font-family: inherit !important;
+	font-size: inherit !important;
+	font-weight: inherit !important;
+	
+	/* Override Elementor spacing */
+	padding: inherit !important;
+	margin: 0 !important;
+	
+	/* Override Elementor effects */
+	box-shadow: inherit !important;
+	text-shadow: none !important;
+	border-radius: inherit !important;
+}
+
+/* Ensure primary variant styles win */
+.elementor-widget-button .flow-button.primary,
+.elementor-button-wrapper .flow-button.primary {
+	background-color: var(--color-primary, #2563EB) !important;
+	color: var(--color-on-primary, #FFFFFF) !important;
+	border-color: var(--color-primary, #2563EB) !important;
+}

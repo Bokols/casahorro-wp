@@ -1,0 +1,573 @@
+/**
+ * Design Tokens for casAhorro
+ * 
+ * Source: UI/UX System PRD v1.3.0 + C1 Specification
+ * Version: 1.3.0
+ * Updated: November 3, 2025
+ * 
+ * C1 NEUTRAL INK PALETTE:
+ * - Primary text: #1E293B (slate-800)
+ * - Secondary text: #475569 (slate-600)
+ * - Tertiary text: #64748B (slate-500)
+ * - All text, links, and interactive elements use C1 neutrals
+ * 
+ * DUAL-ACCENT SYSTEM:
+ * - Surface colors (backgrounds only): mint, coral, lavender, sage, cream
+ * - Accent-ink (#2A3D45): Icons/illustrations ONLY, never for body text
+ * - Usage: Pastel surfaces provide visual interest without overwhelming neutral text
+ * - Contrast: All pastels maintain WCAG AA (4.5:1) with neutral text
+ * 
+ * ELEMENTOR INTEGRATION:
+ * - Global color variables mapped to C1 neutrals
+ * - Prevents Elementor from injecting non-token colors
+ * 
+ * CURRENCY FORMAT (CLP):
+ * - Thousands separator: dot (.)
+ * - Decimal places: none (0)
+ * - Examples: $1.999.990, $999.990, $49.990
+ * 
+ * No analytics tracking. All UI text in es-CL.
+ */
+
+:root {
+/* ========================================
+   COLORS: C1 NEUTRALS
+   ======================================== */
+
+/* Base Colors */
+--color-white: #FFFFFF;
+--color-black: #000000;
+
+/* Slate Palette (C1 Primary Neutrals) */
+--color-slate-50: #F8FAFC;
+--color-slate-100: #F1F5F9;
+--color-slate-200: #E2E8F0;
+--color-slate-300: #CBD5E1;
+--color-slate-400: #94A3B8;
+--color-slate-500: #64748B;
+--color-slate-600: #475569;
+--color-slate-700: #334155;
+--color-slate-800: #1E293B;
+--color-slate-900: #0F172A;
+
+/* Gray Palette (Mapped to C1 Primary) */
+--color-gray-50: #1E293B;
+--color-gray-100: #1E293B;
+--color-gray-200: #1E293B;
+--color-gray-300: #1E293B;
+--color-gray-400: #1E293B;
+--color-gray-500: #1E293B;
+--color-gray-600: #1E293B;
+--color-gray-700: #1E293B;
+--color-gray-800: #1E293B;
+--color-gray-900: #1E293B;
+
+/* ========================================
+   DUAL-ACCENT SYSTEM
+   ======================================== */
+
+/**
+ * IMPORTANT: Dual-Accent Usage Rules
+ * 
+ * Pastel surfaces are for BACKGROUNDS ONLY:
+ * - Section bands (.section--pastel-*)
+ * - Selected states (chips, tabs, pagination)
+ * - Notice backgrounds (info, success, warning, error)
+ * - Drawer headers
+ * 
+ * NEVER use pastel surfaces for:
+ * - Body text or paragraph text
+ * - Links or interactive text
+ * - Any text smaller than 18px bold / 24px regular
+ * 
+ * Accent-ink (#2A3D45) is for ICONS/ILLUSTRATIONS ONLY:
+ * - SVG icon fills
+ * - Decorative illustrations
+ * - Close buttons in toasts/modals
+ * 
+ * NEVER use accent-ink for:
+ * - Body text, headings, or any readable content
+ * - Interactive elements like buttons or links
+ * - Form inputs or labels
+ * 
+ * All text must use C1 neutrals to maintain AA contrast.
+ */
+
+/* Accent Surface Colors (Backgrounds Only) */
+--color-accent-surface-mint: #c9e5ea;
+--color-accent-surface-coral: #f2ddda;
+--color-accent-surface-lavender: #cec7ee;
+--color-accent-surface-sage: #d9e8db;
+--color-accent-surface-cream: #f6e7c8;
+
+/* Derived Shades (Hover/Active States) */
+--color-accent-surface-sage-dark: #c9dfd0;
+--color-accent-surface-lavender-dark: #beb8e5;
+
+/* Legacy Accent Palette (Backwards Compatibility) */
+--color-accent-mint: #c9e5ea;
+--color-accent-coral: #f2ddda;
+--color-accent-lavender: #cec7ee;
+--color-accent-sage: #d9e8db;
+--color-accent-cream: #f6e7c8;
+
+/* Accent Ink (Icons/Illustrations Only - Never Body Text) */
+--color-accent-ink: color-mix(in srgb, #1E293B 78%, #d9e8db 22%);
+--color-accent-ink-fallback: #2A3D45; /* Precomputed for browsers without color-mix */
+
+/* ========================================
+   SEMANTIC COLORS
+   ======================================== */
+
+/* Text Colors (C1 Neutrals) */
+--color-text-primary: #1E293B;
+--color-text-secondary: #475569;
+--color-text-tertiary: #64748B;
+--color-text-inverse: #FFFFFF;
+--color-text-link: #1E293B;
+--color-text-link-hover: #475569;
+
+/* Surface Colors */
+--color-surface-background: #FFFFFF;
+--color-surface-background-alt: #F8FAFC;
+--color-surface-overlay: rgba(30, 41, 59, 0.42);
+--color-surface-card: #FFFFFF;
+--color-surface-elevated: #FFFFFF;
+
+/* Border Colors */
+--color-border-default: #E2E8F0;
+--color-border-light: #F1F5F9;
+--color-border-medium: #CBD5E1;
+--color-border-dark: #94A3B8;
+--color-border-focus: #1E293B;
+
+/* Success State (Sage Surface + Neutral Text) */
+--color-success-text: var(--color-text-primary);
+--color-success-background: var(--color-success-surface);
+--color-success-border: var(--color-border-medium);
+--color-success-surface: #d9e8db;
+
+/* Warning State (Cream Surface + Neutral Text) */
+--color-warning-text: var(--color-text-primary);
+--color-warning-background: var(--color-warning-surface);
+--color-warning-border: var(--color-border-medium);
+--color-warning-surface: #f6e7c8;
+
+/* Error State (Coral Surface + Neutral Text) */
+--color-error-text: var(--color-text-primary);
+--color-error-background: var(--color-error-surface);
+--color-error-border: var(--color-border-medium);
+--color-error-surface: #f2ddda;
+
+/* Info State (Mint Surface + Neutral Text) */
+--color-info-text: var(--color-text-primary);
+--color-info-background: var(--color-info-surface);
+--color-info-border: var(--color-border-medium);
+--color-info-surface: #c9e5ea;
+
+/* Disclosure State (Yellow) */
+/* Disclosure State (Yellow) */
+--color-disclosure-background: #FDE2A8;
+--color-disclosure-text: #1E293B;
+--color-disclosure-border: #1E293B;
+
+/* Interactive States (C1 Neutrals Only) */
+--color-interactive-primary: var(--color-text-primary);
+--color-interactive-primary-hover: var(--color-text-secondary);
+--color-interactive-primary-active: var(--color-text-primary);
+--color-interactive-secondary: var(--color-text-tertiary);
+--color-interactive-secondary-hover: var(--color-text-secondary);
+--color-interactive-secondary-active: var(--color-text-primary);
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+/* Font Families */
+--font-family-base: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+--font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+/* Font Sizes - Fixed (Legacy) */
+--font-size-h1: 32px;
+--font-size-h2: 24px;
+--font-size-h3: 20px;
+--font-size-body: 16px;
+--font-size-small: 14px;
+--font-size-micro: 12px;
+
+/* ========================================
+   FLUID TYPOGRAPHY (clamp)
+   ======================================== */
+
+/**
+ * Responsive font sizes using CSS clamp()
+ * 
+ * FORMULA: clamp(MIN, PREFERRED, MAX)
+ * - MIN: Minimum size at viewport 375px (mobile)
+ * - PREFERRED: Calculated value = MIN_REM + (MAX - MIN) × (100vw - 375px) / (1440 - 375)
+ * - MAX: Maximum size at viewport 1440px (desktop)
+ * 
+ * CALCULATION EXAMPLE (H1: 28px → 36px):
+ * - MIN: 28px = 1.75rem
+ * - MAX: 36px = 2.25rem
+ * - DIFF: 36 - 28 = 8px = 0.5rem
+ * - VW_DIFF: 1440 - 375 = 1065px
+ * - PREFERRED: 1.75rem + (0.5rem × (100vw - 375px) / 1065px)
+ *   Simplified: 1.4815rem + 1.1852vw
+ * 
+ * BENEFITS:
+ * - Smooth scaling across all viewports (no breakpoint jumps)
+ * - Prevents 6-line wraps on narrow viewports
+ * - Maintains readability on all devices
+ * - Overrides Elementor inline styles when used with !important
+ * 
+ * VIEWPORT SCALING EXAMPLES:
+ * - 375px (iPhone): MIN size
+ * - 768px (iPad): ~70% between MIN and MAX
+ * - 1024px (laptop): ~85% between MIN and MAX
+ * - 1440px+ (desktop): MAX size
+ * 
+ * USAGE:
+ * font-size: var(--font-size-h1-fluid) !important;
+ */
+
+/* H1: Scales from 28px (mobile 375px) to 36px (desktop 1440px) */
+--font-size-h1-fluid: clamp(1.75rem, 1.4815rem + 1.1852vw, 2.25rem);
+
+/* H2: Scales from 24px (mobile) to 30px (desktop) */
+--font-size-h2-fluid: clamp(1.5rem, 1.3148rem + 0.8148vw, 1.875rem);
+
+/* H3: Scales from 20px (mobile) to 24px (desktop) */
+--font-size-h3-fluid: clamp(1.25rem, 1.1481rem + 0.4444vw, 1.5rem);
+
+/* Body/Tagline: Scales from 16px (mobile) to 18px (desktop) */
+--font-size-body-fluid: clamp(1rem, 0.9259rem + 0.3259vw, 1.125rem);
+
+/* Display Sizes - For Hero/Landing Pages */
+/* Display Large: 36-48px (hero titles) */
+--font-size-display-lg-fluid: clamp(2.25rem, 1.7963rem + 2.0000vw, 3rem);
+
+/* Display Medium: 30-40px (section headers) */
+--font-size-display-md-fluid: clamp(1.875rem, 1.5741rem + 1.3333vw, 2.5rem);
+
+/* Display Small: 24-32px (card headers) */
+--font-size-display-sm-fluid: clamp(1.5rem, 1.2778rem + 0.9815vw, 2rem);
+
+/* Font Weights */
+--font-weight-regular: 400;
+--font-weight-medium: 500;
+--font-weight-semibold: 600;
+--font-weight-bold: 700;
+
+/* Line Heights */
+--line-height-h1: 1.25;
+--line-height-h2: 1.3;
+--line-height-h3: 1.35;
+--line-height-body: 1.6;
+--line-height-small: 1.5;
+--line-height-micro: 1.4;
+
+/* Letter Spacing */
+--letter-spacing-h1: -0.01em;
+--letter-spacing-h2: -0.005em;
+--letter-spacing-h3: 0;
+--letter-spacing-body: 0;
+--letter-spacing-small: 0;
+--letter-spacing-micro: 0.01em;
+
+/* ========================================
+   SPACING
+   ======================================== */
+
+/* 8-point Grid System */
+--spacing-0: 0;
+--spacing-1: 4px;
+--spacing-2: 8px;
+--spacing-3: 12px;
+--spacing-4: 16px;
+--spacing-5: 20px;
+--spacing-6: 24px;
+--spacing-8: 32px;
+--spacing-10: 40px;
+--spacing-12: 48px;
+--spacing-16: 64px;
+--spacing-20: 80px;
+--spacing-24: 96px;
+
+/* Grid & Container */
+--grid-gap: 24px;
+--grid-gutter: 16px;
+--container-max-width: 1280px;
+--container-padding: 20px;
+
+/* ========================================
+   BORDER RADIUS
+   ======================================== */
+
+--radius-none: 0;
+--radius-sm: 8px;
+--radius-md: 12px;
+--radius-lg: 16px;
+--radius-xl: 24px;
+--radius-2xl: 32px;
+--radius-full: 9999px;
+
+/* ========================================
+   SHADOWS
+   ======================================== */
+
+--shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+--shadow-elevated: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+--shadow-focus-ring: 0 0 0 3px rgba(30, 41, 59, 0.15);
+--shadow-focus-ring-outer: 0 0 0 6px rgba(30, 41, 59, 0.08);
+--shadow-none: none;
+
+/* ========================================
+   Z-INDEX
+   ======================================== */
+
+--z-cookieyes: 999999;
+--z-modal: 1100;
+--z-drawer: 1050;
+--z-fab: 1000;
+--z-header: 900;
+--z-ribbon: 850;
+--z-content: 1;
+--z-behind: -1;
+
+/* ========================================
+   BREAKPOINTS
+   ======================================== */
+
+--breakpoint-nav-fold: 1024px;
+--breakpoint-ribbon-hide: 640px;
+--breakpoint-tablet: 768px;
+--breakpoint-mobile: 480px;
+
+/* ========================================
+   HEADER SPECIFICATIONS
+   ======================================== */
+
+/* Desktop Header */
+--header-desktop-height: 82px;
+--header-desktop-ribbon-height: 22.09px;
+--header-desktop-total-height: 104.09px;
+
+/* Mobile Header */
+--header-mobile-height: 61.8px;
+--header-mobile-ribbon-height: 0px;
+--header-mobile-total-height: 61.8px;
+
+/* Logo */
+--header-logo-width: 159px;
+--header-logo-height: 37.8px;
+
+/* Menu */
+--header-menu-font-size: 14px;
+--header-menu-font-weight: 400;
+--header-menu-line-height: 1.4375;
+--header-menu-item-padding: 16px;
+
+/* ========================================
+   MOTION & ANIMATION
+   ======================================== */
+
+/* Durations */
+--motion-duration-instant: 0ms;
+--motion-duration-fast: 180ms;
+--motion-duration-normal: 220ms;
+--motion-duration-slow: 300ms;
+
+/* Easing Curves */
+--motion-easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+--motion-easing-in: cubic-bezier(0.4, 0, 1, 1);
+--motion-easing-out: cubic-bezier(0, 0, 0.2, 1);
+--motion-easing-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Focus Ring (WCAG AA Compliant with C1 Neutrals) */
+--a11y-focus-ring-width: 3px;
+--a11y-focus-ring-color: #1E293B;
+--a11y-focus-ring-offset: 2px;
+--a11y-focus-ring-style: solid;
+--a11y-focus-ring-outer-shadow: 0 0 0 6px rgba(30, 41, 59, 0.08);
+
+/* Minimum Tap Target */
+--a11y-min-tap-target: 44px;
+
+/* ========================================
+   ELEMENTOR INTEGRATION
+   ======================================== */
+
+/**
+ * Map Elementor System Colors to C1 Neutrals
+ * 
+ * These variables prevent Elementor from using its default blue/magenta
+ * color scheme. All Elementor widgets will inherit C1 neutral colors.
+ * 
+ * Mapping:
+ * - primary: C1 primary text (#1E293B, slate-800)
+ * - secondary: C1 secondary text (#475569, slate-600)
+ * - text: C1 primary text (#1E293B, slate-800)
+ * - accent: C1 slate-700 (#334155) for subtle emphasis
+ * 
+ * This ensures Elementor buttons, headings, and widgets use our
+ * design system instead of introducing non-token colors.
+ */
+--e-global-color-primary: #1E293B;
+--e-global-color-secondary: #475569;
+--e-global-color-text: #1E293B;
+--e-global-color-accent: #334155;
+}
+
+/* ========================================
+   MOTION: REDUCED MOTION PREFERENCES
+   ======================================== */
+
+/**
+ * Respect user's motion preferences
+ * When prefers-reduced-motion is enabled, animations are instant
+ */
+@media (prefers-reduced-motion: reduce) {
+:root {
+--motion-duration-instant: 0.01ms;
+--motion-duration-fast: 0.01ms;
+--motion-duration-normal: 0.01ms;
+--motion-duration-slow: 0.01ms;
+}
+
+*,
+*::before,
+*::after {
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+scroll-behavior: auto !important;
+}
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+/**
+ * Apply base typography and color tokens to root elements
+ */
+html {
+font-size: 100%;
+font-family: var(--font-family-base);
+line-height: var(--line-height-body);
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+font-size: var(--font-size-body);
+color: var(--color-text-primary);
+background-color: var(--color-surface-background);
+margin: 0;
+padding: 0;
+}
+
+/**
+ * Typography Scale
+ */
+h1 {
+font-size: var(--font-size-h1);
+font-weight: var(--font-weight-bold);
+line-height: var(--line-height-h1);
+letter-spacing: var(--letter-spacing-h1);
+margin: 0 0 var(--spacing-6) 0;
+}
+
+h2 {
+font-size: var(--font-size-h2);
+font-weight: var(--font-weight-bold);
+line-height: var(--line-height-h2);
+letter-spacing: var(--letter-spacing-h2);
+margin: 0 0 var(--spacing-5) 0;
+}
+
+h3 {
+font-size: var(--font-size-h3);
+font-weight: var(--font-weight-semibold);
+line-height: var(--line-height-h3);
+letter-spacing: var(--letter-spacing-h3);
+margin: 0 0 var(--spacing-4) 0;
+}
+
+p {
+font-size: var(--font-size-body);
+font-weight: var(--font-weight-regular);
+line-height: var(--line-height-body);
+letter-spacing: var(--letter-spacing-body);
+margin: 0 0 var(--spacing-4) 0;
+}
+
+small {
+font-size: var(--font-size-small);
+line-height: var(--line-height-small);
+letter-spacing: var(--letter-spacing-small);
+}
+
+/**
+ * Links (C1 Neutral Ink)
+ * 
+ * INTERACTION PATTERN:
+ * - default = #1E293B
+ * - hover = underline becomes visible (NO color change)
+ * - active = #475569 + underline
+ * - focus-visible = 3px outline using currentColor
+ */
+a {
+	color: var(--color-text-link, #1E293B);
+	text-decoration: underline;
+	text-decoration-color: var(--color-border-default, #E2E8F0); /* Subtle underline */
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+	transition: text-decoration-color var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+/* Hover: underline becomes visible, NO color change */
+a:hover {
+	color: var(--color-text-link, #1E293B); /* KEEP SAME COLOR */
+	text-decoration-color: currentColor; /* Underline becomes visible */
+	text-decoration-thickness: 2px;
+}
+
+/* Active: darker color + underline */
+a:active {
+	color: var(--color-text-secondary, #475569);
+	text-decoration-color: currentColor;
+}
+
+/**
+ * Focus States (WCAG AA Compliant with Soft Outer Shadow)
+ */
+*:focus-visible {
+outline: var(--a11y-focus-ring-width) var(--a11y-focus-ring-style) var(--a11y-focus-ring-color);
+outline-offset: var(--a11y-focus-ring-offset);
+box-shadow: var(--shadow-focus-ring), var(--a11y-focus-ring-outer-shadow);
+}
+
+/* Remove default focus outline when focus-visible is supported */
+*:focus:not(:focus-visible) {
+outline: none;
+box-shadow: none;
+}
+
+/**
+ * Buttons (Minimum Tap Target)
+ */
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+min-height: var(--a11y-min-tap-target);
+min-width: var(--a11y-min-tap-target);
+}
+

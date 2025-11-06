@@ -1,0 +1,390 @@
+/**
+ * Header Sticky - Opaque Background Enforcement
+ * 
+ * Prevents transparency flicker on sticky header during hover/focus/scroll.
+ * Forces solid background color to avoid see-through effects.
+ * 
+ * Scope: #cas-header and .site-header when sticky
+ * Does NOT affect: Non-header sections, modals, drawers
+ * 
+ * Priority: Loaded AFTER all header styles to override Elementor/theme defaults
+ * 
+ * @package HelloElementorChild
+ * @version 1.0.0
+ */
+
+/* ========================================
+   STICKY HEADER - SOLID BACKGROUND
+   ======================================== */
+
+/**
+ * Force solid background when header is sticky
+ * Targets multiple sticky class variations:
+ * - .is-sticky (custom theme class)
+ * - .is-scrolled (custom theme class)
+ * - .elementor-sticky--effects (Elementor Pro)
+ * - .elementor-sticky (Elementor)
+ */
+
+/* Base sticky state */
+#cas-header.is-sticky,
+#cas-header.is-scrolled,
+#cas-header.elementor-sticky--effects,
+#cas-header.elementor-sticky,
+.site-header.is-sticky,
+.site-header.is-scrolled,
+.site-header.elementor-sticky--effects,
+.site-header.elementor-sticky,
+.header-wrapper.is-sticky,
+.header-wrapper.is-scrolled {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	background: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	opacity: 1 !important;
+	
+	/* Remove any backdrop filters */
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+	
+	/* Add subtle elevation shadow */
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+	
+	/* Ensure no transparency */
+	background-image: none !important;
+	background-blend-mode: normal !important;
+}
+
+/* ========================================
+   PREVENT HOVER TRANSPARENCY
+   ======================================== */
+
+/**
+ * Lock background opacity on hover/focus
+ * Prevents see-through effects when user hovers over sticky header
+ */
+
+#cas-header.is-sticky:hover,
+#cas-header.is-scrolled:hover,
+#cas-header.elementor-sticky--effects:hover,
+#cas-header.elementor-sticky:hover,
+.site-header.is-sticky:hover,
+.site-header.is-scrolled:hover,
+.site-header.elementor-sticky--effects:hover,
+.site-header.elementor-sticky:hover,
+.header-wrapper.is-sticky:hover,
+.header-wrapper.is-scrolled:hover,
+#cas-header.is-sticky:focus-within,
+#cas-header.is-scrolled:focus-within,
+#cas-header.elementor-sticky--effects:focus-within,
+#cas-header.elementor-sticky:focus-within,
+.site-header.is-sticky:focus-within,
+.site-header.is-scrolled:focus-within,
+.site-header.elementor-sticky--effects:focus-within,
+.site-header.elementor-sticky:focus-within,
+.header-wrapper.is-sticky:focus-within,
+.header-wrapper.is-scrolled:focus-within {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	background: var(--color-surface-background, #FFFFFF) !important;
+	opacity: 1 !important;
+	
+	/* Remove backdrop filters on interactive states */
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   NAV CONTAINERS - INHERIT SOLID BG
+   ======================================== */
+
+/**
+ * Ensure navigation containers inherit solid background when header is sticky
+ * Prevents transparent nav areas within opaque header
+ */
+
+#cas-header.is-sticky .nav-primary,
+#cas-header.is-scrolled .nav-primary,
+#cas-header.elementor-sticky--effects .nav-primary,
+#cas-header.elementor-sticky .nav-primary,
+.site-header.is-sticky .nav-primary,
+.site-header.is-scrolled .nav-primary,
+.header-wrapper.is-sticky .nav-primary,
+.header-wrapper.is-scrolled .nav-primary,
+#cas-header.is-sticky .menu-primary,
+#cas-header.is-scrolled .menu-primary,
+#cas-header.elementor-sticky--effects .menu-primary,
+#cas-header.elementor-sticky .menu-primary,
+.site-header.is-sticky .menu-primary,
+.site-header.is-scrolled .menu-primary,
+.header-wrapper.is-sticky .menu-primary,
+.header-wrapper.is-scrolled .menu-primary,
+#cas-header.is-sticky .elementor-nav-menu,
+#cas-header.is-scrolled .elementor-nav-menu,
+#cas-header.elementor-sticky--effects .elementor-nav-menu,
+#cas-header.elementor-sticky .elementor-nav-menu,
+.site-header.is-sticky .elementor-nav-menu,
+.site-header.is-scrolled .elementor-nav-menu,
+.header-wrapper.is-sticky .elementor-nav-menu,
+.header-wrapper.is-scrolled .elementor-nav-menu {
+	background-color: transparent !important;
+	background: transparent !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* Nav containers on hover/focus */
+#cas-header.is-sticky .nav-primary:hover,
+#cas-header.is-scrolled .nav-primary:hover,
+#cas-header.is-sticky .menu-primary:hover,
+#cas-header.is-scrolled .menu-primary:hover,
+#cas-header.is-sticky .elementor-nav-menu:hover,
+#cas-header.is-scrolled .elementor-nav-menu:hover,
+.header-wrapper.is-sticky .nav-primary:hover,
+.header-wrapper.is-scrolled .nav-primary:hover,
+.header-wrapper.is-sticky .menu-primary:hover,
+.header-wrapper.is-scrolled .menu-primary:hover {
+	background-color: transparent !important;
+	background: transparent !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   HEADER INNER CONTAINERS
+   ======================================== */
+
+/**
+ * Force solid backgrounds on inner header wrappers
+ * Prevents transparency in nested Elementor sections/columns
+ */
+
+#cas-header.is-sticky .cas-header-inner,
+#cas-header.is-scrolled .cas-header-inner,
+#cas-header.elementor-sticky--effects .cas-header-inner,
+#cas-header.elementor-sticky .cas-header-inner,
+.header-wrapper.is-sticky .cas-header-inner,
+.header-wrapper.is-scrolled .cas-header-inner,
+#cas-header.is-sticky .elementor-section,
+#cas-header.is-scrolled .elementor-section,
+#cas-header.elementor-sticky--effects .elementor-section,
+#cas-header.elementor-sticky .elementor-section,
+#cas-header.is-sticky .elementor-column,
+#cas-header.is-scrolled .elementor-column,
+#cas-header.elementor-sticky--effects .elementor-column,
+#cas-header.elementor-sticky .elementor-column {
+	background-color: transparent !important;
+	background-image: none !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   ELEMENTOR WIDGET CONTAINERS
+   ======================================== */
+
+/**
+ * Prevent Elementor widgets from adding transparent overlays
+ * Ensures all widget wrappers inside sticky header remain transparent
+ * (parent header provides solid background)
+ */
+
+#cas-header.is-sticky .elementor-widget-wrap,
+#cas-header.is-scrolled .elementor-widget-wrap,
+#cas-header.elementor-sticky--effects .elementor-widget-wrap,
+#cas-header.elementor-sticky .elementor-widget-wrap,
+#cas-header.is-sticky .elementor-widget-container,
+#cas-header.is-scrolled .elementor-widget-container,
+#cas-header.elementor-sticky--effects .elementor-widget-container,
+#cas-header.elementor-sticky .elementor-widget-container {
+	background-color: transparent !important;
+	background: transparent !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   Z-INDEX ENFORCEMENT
+   ======================================== */
+
+/**
+ * Ensure sticky header maintains proper z-index
+ * Prevents content from overlapping header
+ */
+
+#cas-header.is-sticky,
+#cas-header.is-scrolled,
+#cas-header.elementor-sticky--effects,
+#cas-header.elementor-sticky,
+.site-header.is-sticky,
+.site-header.is-scrolled,
+.site-header.elementor-sticky--effects,
+.site-header.elementor-sticky,
+.header-wrapper.is-sticky,
+.header-wrapper.is-scrolled {
+	z-index: var(--z-header, 900) !important;
+	position: sticky !important;
+	top: 0 !important;
+}
+
+/* Admin bar offset (WordPress) */
+body.admin-bar #cas-header.is-sticky,
+body.admin-bar #cas-header.is-scrolled,
+body.admin-bar .site-header.is-sticky,
+body.admin-bar .site-header.is-scrolled,
+body.admin-bar .header-wrapper.is-sticky,
+body.admin-bar .header-wrapper.is-scrolled {
+	top: 32px !important;
+}
+
+@media (max-width: 782px) {
+	body.admin-bar #cas-header.is-sticky,
+	body.admin-bar #cas-header.is-scrolled,
+	body.admin-bar .site-header.is-sticky,
+	body.admin-bar .site-header.is-scrolled,
+	body.admin-bar .header-wrapper.is-sticky,
+	body.admin-bar .header-wrapper.is-scrolled {
+		top: 46px !important;
+	}
+}
+
+/* ========================================
+   BORDER ENFORCEMENT
+   ======================================== */
+
+/**
+ * Maintain bottom border for visual separation when sticky
+ */
+
+#cas-header.is-sticky,
+#cas-header.is-scrolled,
+.header-wrapper.is-sticky,
+.header-wrapper.is-scrolled {
+	border-bottom: 1px solid var(--color-border-default, #E2E8F0) !important;
+}
+
+/* ========================================
+   TRANSITIONS - SMOOTH STATE CHANGES
+   ======================================== */
+
+/**
+ * Smooth transitions when becoming sticky
+ * Prevents jarring background color changes
+ */
+
+#cas-header,
+.site-header,
+.header-wrapper {
+	transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+	            box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+	            opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Disable transitions if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	#cas-header,
+	.site-header,
+	.header-wrapper {
+		transition: none !important;
+	}
+}
+
+/* ========================================
+   SAFETY GUARDS - NON-HEADER ELEMENTS
+   ======================================== */
+
+/**
+ * Do NOT apply these rules to:
+ * - Modals/drawers (they need their own backgrounds)
+ * - Content sections (should maintain their own backgrounds)
+ * - Footer (separate component)
+ * 
+ * Rules above are scoped to #cas-header, .site-header, .header-wrapper
+ * so this is already safe by specificity
+ */
+
+/* ========================================
+   ELEMENTOR MOTION EFFECTS OVERRIDE
+   ======================================== */
+
+/**
+ * Disable Elementor motion effects on sticky header
+ * Prevents transparency animations that conflict with our solid background
+ */
+
+#cas-header.is-sticky[data-settings*="motion_fx"],
+#cas-header.is-scrolled[data-settings*="motion_fx"],
+#cas-header.elementor-sticky--effects[data-settings*="motion_fx"],
+#cas-header.elementor-sticky[data-settings*="motion_fx"],
+.header-wrapper.is-sticky[data-settings*="motion_fx"],
+.header-wrapper.is-scrolled[data-settings*="motion_fx"] {
+	transform: none !important;
+	filter: none !important;
+	opacity: 1 !important;
+}
+
+/* ========================================
+   HIGH CONTRAST MODE SUPPORT
+   ======================================== */
+
+/**
+ * Ensure header remains readable in forced colors mode
+ */
+
+@media (forced-colors: active) {
+	#cas-header.is-sticky,
+	#cas-header.is-scrolled,
+	.site-header.is-sticky,
+	.site-header.is-scrolled,
+	.header-wrapper.is-sticky,
+	.header-wrapper.is-scrolled {
+		border: 2px solid CanvasText !important;
+		background-color: Canvas !important;
+		color: CanvasText !important;
+	}
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+/**
+ * Remove sticky positioning and shadows for print
+ */
+
+@media print {
+	#cas-header,
+	.site-header,
+	.header-wrapper {
+		position: static !important;
+		box-shadow: none !important;
+		background-color: white !important;
+		color: black !important;
+	}
+}
+
+/* ========================================
+   DEBUG - DEVELOPMENT ONLY
+   ======================================== */
+
+/**
+ * Uncomment to visualize sticky state during development
+ * Remove before production deployment
+ */
+
+/*
+#cas-header.is-sticky::before,
+#cas-header.is-scrolled::before,
+.header-wrapper.is-sticky::before,
+.header-wrapper.is-scrolled::before {
+	content: "STICKY ACTIVE";
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: red;
+	color: white;
+	padding: 4px 8px;
+	font-size: 10px;
+	font-weight: bold;
+	z-index: 9999;
+	pointer-events: none;
+}
+*/

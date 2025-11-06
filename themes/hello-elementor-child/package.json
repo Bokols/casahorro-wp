@@ -1,0 +1,31 @@
+{
+  "name": "hello-elementor-child",
+  "version": "1.0.0",
+  "description": "casAhorro child theme with C1 design system and color token enforcement",
+  "private": true,
+  "scripts": {
+    "lint": "npm run lint:css && npm run lint:php",
+    "lint:css": "stylelint \"**/*.css\" \"../../mu-plugins/**/*.css\" --ignore-path .stylelintignore",
+    "lint:css:fix": "stylelint \"**/*.css\" \"../../mu-plugins/**/*.css\" --fix --ignore-path .stylelintignore",
+    "lint:php": "echo 'PHP linting not configured yet'",
+    "test": "npm run lint"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "design-system",
+    "c1-tokens",
+    "accessibility"
+  ],
+  "author": "casAhorro",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-declaration-strict-value": "^1.10.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

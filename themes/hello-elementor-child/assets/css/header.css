@@ -1,0 +1,727 @@
+/**
+ * Header & Ribbon Styles
+ * casAhorro Design System - Phase 2
+ * 
+ * Token-based header layout with frozen metrics:
+ * - Desktop: 82px header + 22.09px pastel ribbon = 104.09px total
+ * - Mobile: 61.8px header (ribbon hidden)
+ * - Logo: 159px × 37.8px
+ * - Breakpoints: nav_fold 1024px, ribbon_hide 640px
+ * - Z-index: cookieyes (999999) > modal (1100) > drawer (1050) > FAB (1000) > header (900) > ribbon (850)
+ * 
+ * C1 Tokens: Text primary #1E293B, secondary #475569, links #1E293B
+ * Ribbon: Straight 22.09px band with 5 pastel stripes (mint, coral, lavender, sage, cream).
+ * 
+ * Phase-2 Scope Guards:
+ * - Search UI: Fully hidden (display:none + visibility:hidden)
+ * - Inline Compare: Fully hidden (FAB-only mode)
+ * - First H1: Top margin reset to 0 for tight spacing
+ * 
+ * No analytics. Respects prefers-reduced-motion.
+ * 
+ * @package HelloElementorChild
+ */
+
+/* ========================================
+   HEADER WRAPPER (Full-width background)
+   ======================================== */
+
+.header-wrapper {
+	position: relative;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	background: var(--color-surface-background);
+	border-bottom: 1px solid var(--color-border-default);
+	z-index: var(--z-header);
+	margin: 0;
+	padding: 0;
+	transition: box-shadow var(--motion-duration-normal) var(--motion-easing-default);
+}
+
+/* Sticky state on scroll (applied via JavaScript) */
+.header-wrapper.is-scrolled {
+	position: sticky;
+	top: 0;
+	box-shadow: var(--shadow-elevated);
+}
+
+/* Admin bar offset (WordPress admin toolbar) */
+body.admin-bar .header-wrapper.is-scrolled {
+	top: 32px;
+}
+
+@media (max-width: 782px) {
+	body.admin-bar .header-wrapper.is-scrolled {
+		top: 46px;
+	}
+}
+
+/* ========================================
+   HEADER ELEMENT
+   ======================================== */
+
+body #cas-header {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: none;
+	box-shadow: none;
+	position: relative;
+}
+
+/* ========================================
+   HEADER INNER LAYOUT
+   ======================================== */
+
+/* Outer container: full-width with horizontal padding */
+body #cas-header .cas-header-inner {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding-left: var(--container-padding);
+	padding-right: var(--container-padding);
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	background: var(--color-surface-background, #FFFFFF) !important;
+}
+
+/* Inner container: centered, constrained width, grid layout */
+body #cas-header .cas-container {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: var(--container-max-width);
+	margin: 0 auto;
+	padding: var(--spacing-4) var(--spacing-6);
+	
+	/* Grid: logo | nav | utilities */
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: var(--spacing-6);
+	
+	/* Desktop height from tokens - fixed height to prevent CLS */
+	height: var(--header-desktop-height);
+	min-height: var(--header-desktop-height);
+}
+
+/* Mobile height from tokens - fixed height to prevent CLS */
+@media (max-width: 1023px) {
+	body #cas-header .cas-container {
+		height: var(--header-mobile-height);
+		min-height: var(--header-mobile-height);
+		padding: var(--spacing-3) var(--spacing-4);
+	}
+}
+
+/* ========================================
+   LOGO / BRANDING
+   ======================================== */
+
+.header-branding {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	width: auto;
+	height: var(--header-logo-height);
+	min-height: var(--header-logo-height);
+	padding: 0;
+}
+
+.header-branding a {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+}
+
+.header-branding img {
+	display: block;
+	width: var(--header-logo-width);
+	height: var(--header-logo-height);
+	max-width: 100%;
+	object-fit: contain;
+}
+
+/* ========================================
+   PRIMARY NAVIGATION
+   ======================================== */
+/**
+ * Navigation Menu Items & States (Desktop + Mobile):
+ * Items: Productos (/productos) · Comparar (/comparar) · Sobre (/sobre) · Contacto (/contacto)
+ * Orden: Sin "Inicio", orden específico mantenido en ambos dispositivos
+ * 
+ * Estados (Consistent across desktop/mobile):
+ * - Default: ink #1E293B (WCAG AA compliant - contrast >7:1)
+ * - Hover: underline only (sin background)
+ * - Focus-visible: 3px outline (currentColor), no filled pill - visible focus ring
+ * - Active/selected: underline + ink-700 #475569 (WCAG AA compliant - contrast 4.5:1+)
+ * 
+ * C1 Compliance: All colors from C1 neutral ink palette (slate-800, slate-600)
+ */
+
+.nav-primary {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-6);
+}
+
+.menu-primary {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-4);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.menu-primary a {
+	display: inline-block;
+	color: #1E293B; /* Default ink as requested */
+	text-decoration: none;
+	font-size: var(--header-menu-font-size);
+	font-weight: var(--header-menu-font-weight);
+	line-height: var(--header-menu-line-height);
+	padding: var(--spacing-2) var(--spacing-3);
+	border-radius: var(--radius-sm);
+	transition: color var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+/* Hover: underline only, NO color change, NO filled pill */
+.menu-primary a:hover {
+	color: #1E293B !important; /* Keep same color - INTERACTION PATTERN */
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	text-decoration-thickness: 2px;
+	background-color: transparent !important; /* NO filled pill */
+}
+
+/* Focus-visible: 3px outline (currentColor), no filled pill - INTERACTION PATTERN */
+.menu-primary a:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	background: transparent !important; /* No filled pill */
+	box-shadow: none !important; /* No shadow ring */
+}
+
+/* Active/selected: underline + ink-700 #475569 */
+.menu-primary a[aria-current="page"],
+.menu-primary .current-menu-item > a,
+.menu-primary .current-menu-ancestor > a {
+	color: #475569; /* ink-700 as requested */
+	text-decoration: underline;
+}
+
+/* ========================================
+   UTILITY NAVIGATION (Right side)
+   ======================================== */
+
+.header-utility {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-4);
+}
+
+.menu-utility {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-4);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.menu-utility a {
+	display: inline-block;
+	color: var(--color-text-primary);
+	text-decoration: none;
+	font-size: var(--header-menu-font-size);
+	font-weight: var(--header-menu-font-weight);
+	line-height: var(--header-menu-line-height);
+	padding: var(--spacing-2) var(--spacing-3);
+	border-radius: var(--radius-sm);
+	transition: color var(--motion-duration-fast) var(--motion-easing-default);
+}
+
+.menu-utility a:hover {
+	color: var(--color-text-primary) !important; /* Keep same color - INTERACTION PATTERN */
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	text-decoration-thickness: 2px;
+}
+
+.menu-utility a:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	box-shadow: none !important;
+}
+
+/* ========================================
+   PHASE-2 SCOPE GUARDS
+   ======================================== */
+
+/**
+ * SEARCH UI - FULLY HIDDEN
+ * 
+ * Phase-2: Search with category dropdown is out of scope.
+ * All search-related controls are hidden without collapsing layout.
+ * Header/ribbon sizing remains intact (no CLS).
+ * 
+ * Will be re-enabled in Search-UI phase with typeahead/chips.
+ */
+.header-search,
+.search-toggle,
+.search-form,
+.search-scope-dropdown,
+.search-input,
+.search-button,
+.nav-search,
+.nav-search__form,
+.nav-search__wrapper,
+.nav-search__category,
+.nav-search__input,
+.nav-search__button {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	width: 0 !important;
+	height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+}
+
+/**
+ * INLINE COMPARE - FULLY HIDDEN (FAB-ONLY MODE)
+ * 
+ * Phase-2: Only the global FAB (#cas-compare-fab) is visible.
+ * Inline header compare button is fully hidden.
+ * 
+ * Z-stack preserved: FAB at z-index 1000, header at 900.
+ * Safe areas respected (bottom-right for FAB, no overlap).
+ */
+.nav-compare,
+[data-nav-compare],
+[data-compare-open]:not(#cas-compare-fab) {
+	display: none !important;
+	visibility: hidden !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	width: 0 !important;
+	height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+}
+
+/* ========================================
+   MOBILE TOGGLE (visible ≤ 1023px)
+   ======================================== */
+
+.menu-toggle {
+	display: none;
+	background: transparent !important; /* Force transparent - no saturated fills */
+	border: none;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-small);
+	font-weight: var(--font-weight-medium);
+	padding: 0;
+	cursor: pointer;
+	
+	/* Exact 44×44px target size per requirement */
+	width: 44px;
+	height: 44px;
+	min-width: 44px;
+	min-height: 44px;
+	
+	border-radius: var(--radius-sm);
+	
+	/* No transition to prevent color changes */
+	transition: none;
+	
+	/* Center the text "Menú" */
+	align-items: center;
+	justify-content: center;
+}
+
+/* No colored fill on hover - keep transparent */
+.menu-toggle:hover {
+	background: transparent !important; /* Force transparent */
+	color: var(--color-text-primary);
+	opacity: 0.92; /* Subtle hover feedback via opacity only */
+}
+
+/* Focus ring using currentColor with 3px outline - INTERACTION PATTERN */
+.menu-toggle:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	background: transparent !important; /* No fill */
+	box-shadow: none !important;
+}
+
+/* Show on mobile ≤1023px */
+@media (max-width: 1023px) {
+	.menu-toggle {
+		display: inline-flex;
+	}
+}
+
+/* ========================================
+   MOBILE NAV OVERLAY (≤ 1024px)
+   ======================================== */
+
+/* Desktop Navigation (≥1024px) - Full Parity with Mobile */
+@media (min-width: 1024px) {
+	/* Show full horizontal navigation */
+	.nav-primary {
+		position: static;
+		display: flex !important;
+	}
+	
+	/* Menu items: Productos · Comparar · Sobre · Contacto (no Inicio) */
+	/* States: Default #1E293B, hover underline, focus 3px ring, active underline + #475569 */
+	/* All base styles inherited from .menu-primary rules above */
+	
+	/* Hide mobile utility nav on desktop */
+	.nav-primary__utility {
+		display: none;
+	}
+	
+	/* Show main utility nav on desktop */
+	.header-utility {
+		display: flex;
+	}
+}
+
+@media (max-width: 1023px) {
+	/* Mobile layout: wordmark (left) | spacer | hamburger (right) */
+	body #cas-header .cas-container {
+		grid-template-columns: auto 1fr auto;
+		gap: var(--spacing-4);
+	}
+	
+	/* HIDE CENTERED PILL NAV ON MOBILE - requirement */
+	.nav-primary {
+		display: none !important; /* Hidden by default on mobile */
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 100%;
+		z-index: calc(var(--z-header) + 5);
+		background: var(--color-surface-background);
+		border-bottom: 1px solid var(--color-border-default);
+		box-shadow: var(--shadow-elevated);
+		flex-direction: column;
+		gap: 0;
+		padding: var(--spacing-4);
+		max-height: 70vh;
+		overflow-y: auto;
+	}
+	
+	/* Hide desktop utility nav on mobile */
+	.header-utility {
+		display: none;
+	}
+	
+	/* Ensure hamburger is right-aligned */
+	.menu-toggle {
+		justify-self: end;
+	}
+	
+	/* Open state - show overlay panel */
+	.site-header.is-nav-open .nav-primary,
+	#cas-header.is-open .nav-primary {
+		display: flex !important; /* Show when menu is open */
+	}
+	
+	/* Vertical menu */
+	.site-header.is-nav-open .menu-primary,
+	#cas-header.is-open .menu-primary {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		width: 100%;
+	}
+	
+	.site-header.is-nav-open .menu-primary a,
+	#cas-header.is-open .menu-primary a {
+		display: block;
+		padding: var(--spacing-3) var(--spacing-4);
+		border-radius: var(--radius-sm);
+		color: #1E293B; /* Default ink */
+		background: transparent !important; /* No saturated fills */
+	}
+	
+	/* Mobile hover: underline only, no background - INTERACTION PATTERN */
+	.site-header.is-nav-open .menu-primary a:hover,
+	#cas-header.is-open .menu-primary a:hover {
+		background: transparent !important; /* No background color */
+		color: #1E293B !important; /* Keep same color */
+		text-decoration: underline;
+		text-decoration-color: currentColor;
+		text-decoration-thickness: 2px;
+	}
+	
+	/* Mobile focus: 3px outline, no background - INTERACTION PATTERN */
+	.site-header.is-nav-open .menu-primary a:focus-visible,
+	#cas-header.is-open .menu-primary a:focus-visible {
+		outline: 3px solid currentColor !important;
+		outline-offset: 3px !important;
+		background: transparent !important; /* No filled pill */
+		box-shadow: none !important;
+	}
+	
+	/* Mobile active/selected: underline + ink-700 */
+	.site-header.is-nav-open .menu-primary a[aria-current="page"],
+	.site-header.is-nav-open .menu-primary .current-menu-item > a,
+	.site-header.is-nav-open .menu-primary .current-menu-ancestor > a,
+	#cas-header.is-open .menu-primary a[aria-current="page"],
+	#cas-header.is-open .menu-primary .current-menu-item > a,
+	#cas-header.is-open .menu-primary .current-menu-ancestor > a {
+		color: #475569; /* ink-700 */
+		text-decoration: underline;
+		background: transparent !important; /* No background */
+	}
+	
+	/* Utility nav inside mobile menu */
+	.nav-primary__utility {
+		display: block;
+		width: 100%;
+		margin-top: var(--spacing-4);
+		padding-top: var(--spacing-4);
+		border-top: 1px solid var(--color-border-default);
+	}
+	
+	.nav-utility--mobile .menu-utility {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		width: 100%;
+	}
+	
+	.nav-utility--mobile .menu-utility a {
+		display: block;
+		padding: var(--spacing-3) var(--spacing-4);
+		border-radius: var(--radius-sm);
+		background: transparent !important; /* No saturated fills */
+	}
+	
+	.nav-utility--mobile .menu-utility a:hover {
+		color: var(--color-text-primary) !important; /* Keep same color - INTERACTION PATTERN */
+		text-decoration: underline;
+		text-decoration-color: currentColor;
+		background-color: transparent !important; /* No filled background */
+	}
+}
+
+/* Body scroll lock when mobile menu open */
+body.menu-open {
+	overflow: hidden;
+	position: fixed;
+	width: 100%;
+}
+
+/* ========================================
+   RIBBON (5 Pastel Stripes)
+   ======================================== */
+
+#cas-ribbon {
+	display: block;
+	width: 100%;
+	height: var(--header-desktop-ribbon-height);
+	background: linear-gradient(
+		to right,
+		var(--color-accent-mint) 0% 20%,
+		var(--color-accent-coral) 20% 40%,
+		var(--color-accent-lavender) 40% 60%,
+		var(--color-accent-sage) 60% 80%,
+		var(--color-accent-cream) 80% 100%
+	);
+	border: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	z-index: var(--z-ribbon);
+	overflow: hidden;
+}
+
+/* Inner container - purely structural */
+.cas-ribbon-inner {
+	width: 100%;
+	max-width: var(--container-max-width);
+	height: 100%;
+	margin: 0 auto;
+	padding-inline: var(--container-padding);
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Image removed - straight pastel band only */
+.cas-ribbon-img {
+	display: none !important;
+}
+
+/* Hide ribbon on mobile (≤ 640px per tokens breakpoint-ribbon-hide) */
+@media (max-width: 640px) {
+	#cas-ribbon {
+		display: none;
+	}
+}
+
+/* ========================================
+   FIRST H1 MARGIN RESET
+   ======================================== */
+
+/* Remove top margin from first H1 after header/ribbon to eliminate whitespace */
+.header-wrapper + main h1:first-child,
+#cas-ribbon + main h1:first-child,
+main > h1:first-child,
+main > article > h1:first-child,
+.entry-content > h1:first-child,
+.elementor-section:first-child h1:first-child {
+	margin-top: 0 !important;
+}
+
+/* ========================================
+   FIRST CONTENT SECTION PADDING
+   ======================================== */
+
+/**
+ * Add top padding to first content section based on header + ribbon height
+ * Desktop: 82px header + 22.09px ribbon = 104.09px total
+ * Mobile: 61.8px header (ribbon hidden)
+ * 
+ * This ensures consistent spacing after sticky header without extra gap
+ */
+
+/* Desktop: Add padding equal to header + ribbon */
+main:first-of-type,
+.entry-content:first-child,
+.elementor-section:first-child {
+	padding-top: calc(var(--header-desktop-height) + var(--header-desktop-ribbon-height));
+}
+
+/* Mobile: Add padding equal to header only (ribbon hidden) */
+@media (max-width: 640px) {
+	main:first-of-type,
+	.entry-content:first-child,
+	.elementor-section:first-child {
+		padding-top: var(--header-mobile-height);
+	}
+}
+
+/* When header is not sticky, remove extra padding */
+body:not(.header-sticky) main:first-of-type,
+body:not(.header-sticky) .entry-content:first-child,
+body:not(.header-sticky) .elementor-section:first-child {
+	padding-top: 0;
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.header-wrapper,
+	.nav-primary,
+	.menu-primary a,
+	.menu-utility a,
+	.menu-toggle {
+		transition: none !important;
+	}
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (forced-colors: active) {
+	.menu-primary a:focus-visible,
+	.menu-utility a:focus-visible,
+	.menu-toggle:focus-visible {
+		outline: 2px solid Highlight;
+		outline-offset: 2px;
+	}
+	
+	#cas-ribbon {
+		background: Canvas;
+		border: 1px solid CanvasText;
+	}
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+	.header-wrapper {
+		position: static;
+		box-shadow: none;
+	}
+	
+	.nav-primary {
+		position: static !important;
+		display: flex !important;
+	}
+	
+	.menu-toggle {
+		display: none !important;
+	}
+	
+	#cas-ribbon {
+		display: none !important;
+	}
+}
+
+/* ========================================
+   PLACEHOLDER TEXT (when menu not assigned)
+   ======================================== */
+
+.nav-placeholder {
+	color: var(--color-text-secondary);
+	font-size: var(--font-size-small);
+	margin: 0;
+}
+
+/* ========================================
+   SCREEN READER ONLY
+   ======================================== */
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ========================================
+   Z-INDEX LAYERING (from tokens.css)
+   ======================================== */
+
+/**
+ * Z-index hierarchy (frozen Phase-2):
+ * - CookieYes banner: 999999 (untouchable)
+ * - Modal: 1100
+ * - Drawer: 1050
+ * - Compare FAB: 1000
+ * - Header: 900 (this file)
+ * - Ribbon: 850 (this file)
+ * - Content: 1
+ * 
+ * Safe areas:
+ * - Mobile bottom: CookieYes banner may appear (drawer CSS handles padding)
+ * - Desktop right: Compare FAB floats (drawer CSS handles padding)
+ * - Header stays below modals/drawers (z-index 900 < 1050)
+ * - Ribbon stays below header (z-index 850 < 900)
+ */

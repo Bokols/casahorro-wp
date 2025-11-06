@@ -1,0 +1,551 @@
+/**
+ * INTERACTION PATTERNS - UNIFIED C1 BEHAVIORS
+ * 
+ * Enforces one consistent interaction pattern everywhere.
+ * All components follow these rules - no exceptions.
+ * 
+ * Version: 1.0.0
+ * Last Updated: November 3, 2025
+ * 
+ * PATTERN RULES (apply across components):
+ * 
+ * Links:
+ *   - default = #1E293B
+ *   - hover = underline (no color change)
+ *   - focus-visible = 3px outline using currentColor
+ *   - active = #475569 + underline
+ * 
+ * Buttons:
+ *   - default inks on neutral backgrounds per component style
+ *   - hover = opacity −8% (no hue shift)
+ *   - focus-visible = 3px outline as above
+ *   - active = slight transform
+ * 
+ * Chips/pills (selectables):
+ *   - default = pastel surface + ink
+ *   - hover = slight opacity
+ *   - selected = ink-700 text with subtle border—no saturated fills
+ *   - focus-visible = 3px outline
+ * 
+ * Top nav & mobile panel links:
+ *   - same as links
+ *   - never filled color on hover/focus
+ * 
+ * Accordion/FAQ:
+ *   - headers use inks
+ *   - hover = underline
+ *   - focus-visible = outline
+ * 
+ * Cards/tables:
+ *   - hover = shadow raise only (or +2px translate)
+ *   - text color never changes
+ * 
+ * Accessibility:
+ *   - 44×44px minimum touch targets
+ *   - Visible focus rings on every interactive element
+ *   - WCAG AA contrast compliance
+ */
+
+/* ========================================
+   LINKS - UNDERLINE ON HOVER, NO COLOR CHANGE
+   ======================================== */
+
+/**
+ * PATTERN: Links show underline on hover, keep same text color
+ * Default: #1E293B
+ * Hover: underline (NO color change)
+ * Active: #475569 + underline
+ * Focus-visible: 3px outline using currentColor
+ */
+
+/* Base link styles */
+a:not(.button):not(.btn):not(.elementor-button):not(.woocommerce-button) {
+	color: var(--color-text-primary, #1E293B) !important;
+	text-decoration: underline;
+	text-decoration-color: var(--color-border-default, #E2E8F0);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+	transition: text-decoration-color var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Hover: underline becomes visible, NO color change */
+a:not(.button):not(.btn):not(.elementor-button):not(.woocommerce-button):hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	text-decoration-thickness: 2px;
+}
+
+/* Active: darker color + underline */
+a:not(.button):not(.btn):not(.elementor-button):not(.woocommerce-button):active {
+	color: var(--color-text-secondary, #475569) !important;
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+}
+
+/* Focus-visible: 3px outline using currentColor */
+a:not(.button):not(.btn):not(.elementor-button):not(.woocommerce-button):focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	box-shadow: none !important;
+	background-color: transparent !important; /* No filled pill */
+}
+
+/* ========================================
+   BUTTONS - OPACITY CHANGE ONLY, NO HUE SHIFT
+   ======================================== */
+
+/**
+ * PATTERN: Buttons use opacity change on hover (−8%)
+ * No hue shifts, no saturated colors
+ * Focus-visible: 3px outline
+ * Active: slight transform
+ */
+
+/* All button elements */
+button,
+.button,
+.btn,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+.wp-block-button__link,
+.elementor-button,
+.woocommerce button.button,
+.woocommerce a.button,
+.woocommerce input.button {
+	/* Localized CSS variables prevent ancestor color mutations */
+	--btn-ink: var(--color-text-primary, #1E293B);
+	--btn-bg: var(--color-surface-background, #FFFFFF);
+	--btn-bg-pressed: var(--color-accent-surface-sage, #d9e8db);
+	
+	/* Use localized variables for color properties */
+	color: var(--btn-ink) !important;
+	background-color: var(--btn-bg);
+	
+	/* Transitions: opacity and transform only (no background-color) */
+	transition: opacity var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+	            transform var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+	            box-shadow var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Hover: opacity −8% (0.92), no hue shift */
+button:hover:not(:disabled),
+.button:hover:not(:disabled),
+.btn:hover:not(:disabled),
+input[type="submit"]:hover:not(:disabled),
+input[type="button"]:hover:not(:disabled),
+.wp-block-button__link:hover:not(:disabled),
+.elementor-button:hover:not(:disabled),
+.woocommerce button.button:hover:not(:disabled),
+.woocommerce a.button:hover:not(:disabled) {
+	opacity: 0.92 !important; /* −8% opacity */
+	/* Colors stay the same - no hue shift */
+}
+
+/* Active: opacity −12% + translateY(1px) */
+button:active:not(:disabled),
+.button:active:not(:disabled),
+.btn:active:not(:disabled),
+input[type="submit"]:active:not(:disabled),
+.elementor-button:active:not(:disabled),
+.woocommerce button.button:active:not(:disabled) {
+	transform: translateY(1px);
+	opacity: 0.88 !important; /* −12% for active/pressed */
+}
+
+/* Pressed state (aria-pressed="true"): pastel sage background */
+button[aria-pressed="true"],
+.button[aria-pressed="true"],
+.btn[aria-pressed="true"],
+.elementor-button[aria-pressed="true"] {
+	background-color: var(--btn-bg-pressed) !important;
+	color: var(--btn-ink) !important;
+}
+
+/* Disabled: opacity ~0.48, pointer-events none */
+button:disabled,
+.button:disabled,
+.btn:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled,
+.elementor-button:disabled,
+.woocommerce button.button:disabled,
+button.disabled,
+.button.disabled {
+	opacity: 0.48 !important;
+	pointer-events: none !important;
+	cursor: not-allowed !important;
+}
+
+/* Focus-visible: 3px outline using currentColor */
+button:focus-visible,
+.button:focus-visible,
+.btn:focus-visible,
+input[type="submit"]:focus-visible,
+.elementor-button:focus-visible,
+.woocommerce button.button:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	box-shadow: none !important;
+}
+
+/* ========================================
+   CHIPS/PILLS - PASTEL + INK, NO SATURATED FILLS
+   ======================================== */
+
+/**
+ * PATTERN: Chips use pastel surface + ink text
+ * Default: pastel surface + ink
+ * Hover: slight opacity
+ * Selected: ink-700 text with subtle border—no saturated fills
+ * Focus-visible: 3px outline
+ */
+
+/* Default chip state */
+.chip,
+.plp-parent-chip,
+.plp-summary-chip,
+.term-chip {
+	background-color: var(--color-surface-background, #FFFFFF);
+	color: var(--color-text-primary, #1E293B);
+	border: 2px solid var(--color-border-default, #E2E8F0);
+	transition: opacity var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Hover: slight opacity */
+.chip:hover:not(:disabled):not(.chip--disabled),
+.plp-parent-chip:hover:not(.chip--disabled),
+.plp-summary-chip:hover:not(:disabled),
+.term-chip:hover:not(:disabled) {
+	opacity: 0.92 !important; /* Slight opacity change */
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	border-color: var(--color-border-medium, #CBD5E1) !important;
+	/* No saturated colors */
+}
+
+/* Selected: pastel surface with ink-700 text */
+.chip--selected,
+.chip[aria-pressed="true"],
+.plp-parent-chip--active,
+.plp-parent-chip[aria-pressed="true"],
+.term-chip.is-active,
+.chip.is-selected {
+	background-color: var(--color-accent-surface-sage, #d9e8db) !important; /* Pastel sage */
+	color: var(--color-text-secondary, #475569) !important; /* ink-700 */
+	border: 2px solid var(--color-border-medium, #CBD5E1) !important; /* Subtle border */
+	font-weight: var(--font-weight-semibold, 600);
+}
+
+/* Selected + Hover: slightly darker pastel, NO saturated fill */
+.chip--selected:hover:not(:disabled),
+.chip[aria-pressed="true"]:hover:not(:disabled),
+.plp-parent-chip--active:hover,
+.plp-parent-chip[aria-pressed="true"]:hover,
+.term-chip.is-active:hover {
+	background-color: #c9dfd0 !important; /* Slightly darker sage */
+	color: var(--color-text-secondary, #475569) !important; /* Maintain ink-700 */
+	border-color: var(--color-border-medium, #CBD5E1) !important;
+	opacity: 1 !important; /* Override opacity for selected state */
+}
+
+/* Focus-visible: 3px outline */
+.chip:focus-visible,
+.plp-parent-chip:focus-visible,
+.plp-summary-chip:focus-visible,
+.term-chip:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	box-shadow: none !important;
+}
+
+/* ========================================
+   TOP NAV & MOBILE PANEL - LINK PATTERN, NO FILLS
+   ======================================== */
+
+/**
+ * PATTERN: Navigation follows link pattern
+ * Never filled color on hover/focus
+ * Underline on hover, 3px outline on focus-visible
+ */
+
+/* Top nav links */
+.menu-primary a,
+.menu-utility a,
+.header-navigation a {
+	color: var(--color-text-primary, #1E293B);
+	text-decoration: none;
+	text-decoration-thickness: 0;
+	text-underline-offset: 4px;
+	transition: text-decoration-thickness var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Hover: underline only, NO color change, NO filled pill */
+.menu-primary a:hover,
+.menu-utility a:hover,
+.header-navigation a:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	text-decoration-thickness: 2px;
+	background-color: transparent !important; /* No filled pill */
+}
+
+/* Active/Current: #475569 + underline */
+.menu-primary a[aria-current="page"],
+.menu-primary .current-menu-item > a,
+.menu-primary .current-menu-ancestor > a,
+.menu-utility a[aria-current="page"] {
+	color: var(--color-text-secondary, #475569) !important;
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	text-decoration-thickness: 2px;
+}
+
+/* Focus-visible: 3px outline, NO filled pill */
+.menu-primary a:focus-visible,
+.menu-utility a:focus-visible,
+.header-navigation a:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	background-color: transparent !important; /* No filled pill */
+	box-shadow: none !important;
+}
+
+/* Mobile panel links - same pattern */
+.site-header.is-nav-open .menu-primary a,
+#cas-header.is-open .menu-primary a,
+.nav-utility--mobile .menu-utility a {
+	color: var(--color-text-primary, #1E293B);
+	text-decoration: none;
+}
+
+.site-header.is-nav-open .menu-primary a:hover,
+#cas-header.is-open .menu-primary a:hover,
+.nav-utility--mobile .menu-utility a:hover {
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	text-decoration: underline;
+	background-color: transparent !important; /* No filled pill */
+}
+
+.site-header.is-nav-open .menu-primary a:focus-visible,
+#cas-header.is-open .menu-primary a:focus-visible,
+.nav-utility--mobile .menu-utility a:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	background-color: transparent !important; /* No filled pill */
+}
+
+/* ========================================
+   ACCORDION/FAQ - UNDERLINE PATTERN
+   ======================================== */
+
+/**
+ * PATTERN: Accordion headers use ink colors
+ * Hover: underline
+ * Focus-visible: outline
+ */
+
+/* Accordion headers (summary elements, toggles, etc.) */
+summary,
+.accordion-toggle,
+.faq-toggle,
+.plp-filter-section__toggle,
+[role="button"][aria-expanded] {
+	color: var(--color-text-primary, #1E293B);
+	text-decoration: none;
+	cursor: pointer;
+	transition: text-decoration var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Hover: underline */
+summary:hover,
+.accordion-toggle:hover,
+.faq-toggle:hover,
+.plp-filter-section__toggle:hover,
+[role="button"][aria-expanded]:hover {
+	text-decoration: underline !important;
+	text-decoration-color: currentColor;
+	text-decoration-thickness: 2px;
+	color: var(--color-text-primary, #1E293B) !important; /* Keep same color */
+	background-color: transparent !important; /* No filled pill */
+}
+
+/* Focus-visible: outline */
+summary:focus-visible,
+.accordion-toggle:focus-visible,
+.faq-toggle:focus-visible,
+.plp-filter-section__toggle:focus-visible,
+[role="button"][aria-expanded]:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	background-color: transparent !important;
+}
+
+/* ========================================
+   CARDS/TABLES - SHADOW/TRANSFORM ONLY
+   ======================================== */
+
+/**
+ * PATTERN: Cards and tables use shadow or transform on hover
+ * Text color never changes
+ * No saturated backgrounds
+ */
+
+/* Product cards, content cards */
+.product-card,
+.woocommerce .products .product,
+.woocommerce-page .products .product,
+.elementor-widget-products .product,
+article.product,
+.cas-card,
+.content-card {
+	transition: transform var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1)),
+	            box-shadow var(--motion-duration-fast, 180ms) var(--motion-easing-default, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Hover: shadow raise or +2px translate, NO text color change */
+.product-card:hover,
+.woocommerce .products .product:hover,
+.woocommerce-page .products .product:hover,
+.elementor-widget-products .product:hover,
+article.product:hover,
+.cas-card:hover,
+.content-card:hover {
+	transform: translateY(-2px) !important;
+	box-shadow: var(--shadow-elevated, 0 10px 15px -3px rgba(30, 41, 59, 0.1), 0 4px 6px -2px rgba(30, 41, 59, 0.05)) !important;
+}
+
+/* Ensure text color never changes on hover */
+.product-card:hover *,
+.woocommerce .products .product:hover *,
+.cas-card:hover *,
+.content-card:hover * {
+	color: inherit; /* Inherit colors - don't change */
+}
+
+/* Tables - hover row highlighting with neutral background (no transition needed) */
+table tbody tr:hover,
+.woocommerce table.shop_table tbody tr:hover,
+.elementor-widget-table tbody tr:hover {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+}
+
+/* Table text color never changes on hover */
+table tbody tr:hover *,
+.woocommerce table.shop_table tbody tr:hover *,
+.elementor-widget-table tbody tr:hover * {
+	color: inherit; /* Inherit colors - don't change */
+}
+
+/* ========================================
+   ACCESSIBILITY - TOUCH TARGETS & FOCUS RINGS
+   ======================================== */
+
+/**
+ * PATTERN: All interactive elements have 44×44px minimum
+ * Visible focus rings on every interactive element
+ */
+
+/* Minimum touch target enforcement */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+[role="button"],
+[role="link"],
+.chip,
+.btn,
+.button {
+	min-height: 44px;
+	min-width: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-2, 8px) var(--spacing-4, 16px);
+}
+
+/* Links in text - ensure adequate line height */
+p a,
+li a,
+.entry-content a,
+.widget a {
+	line-height: 1.6; /* Adequate vertical spacing */
+	padding: 2px 0; /* Expand clickable area */
+}
+
+/* Focus-visible ring - ALWAYS visible */
+*:focus-visible {
+	outline: 3px solid currentColor !important;
+	outline-offset: 3px !important;
+	/* Use current text color for outline to ensure visibility */
+}
+
+/* Remove default focus outline when focus-visible is supported */
+*:focus:not(:focus-visible) {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	*:focus-visible {
+		outline-width: 4px !important;
+		outline-offset: 4px !important;
+	}
+}
+
+/* ========================================
+   END INTERACTION PATTERNS
+   ======================================== */
+
+/* ========================================
+   STICKY HEADER & TOOLBAR LAYOUT
+   ======================================== */
+
+/**
+ * CSS Variables for dynamic height calculation:
+ * Set via JS in main.js using ResizeObserver
+ * - --wp-admin-bar-height: WordPress admin bar (0 or 32px/46px)
+ * - --site-header-height: Measured header wrapper height
+ * - --ribbon-height: Measured ribbon height (0 if hidden)
+ */
+
+/* Header sticky positioning - z-index from tokens.css */
+.header-wrapper.is-scrolled {
+	position: sticky;
+	top: var(--wp-admin-bar-height, 0px);
+	z-index: var(--z-header, 900);
+}
+
+/* PLP Toolbar sticky positioning - sits below header */
+.plp-toolbar {
+	position: sticky;
+	top: calc(
+		var(--wp-admin-bar-height, 0px) + 
+		var(--site-header-height, 82px)
+	);
+	z-index: calc(var(--z-header, 900) - 50); /* 850 - below header */
+	background-color: var(--color-surface-background, #FFFFFF);
+}
+
+/* Ensure toolbar never overlaps header in any stacking context */
+.header-wrapper {
+	z-index: var(--z-header, 900);
+}
+
+.plp-toolbar {
+	z-index: 850; /* Fixed value to ensure it's always below header */
+}
+
+/* Admin bar present - adjust header offset */
+body.admin-bar .header-wrapper.is-scrolled {
+	top: 32px;
+}
+
+@media (max-width: 782px) {
+	body.admin-bar .header-wrapper.is-scrolled {
+		top: 46px;
+	}
+}

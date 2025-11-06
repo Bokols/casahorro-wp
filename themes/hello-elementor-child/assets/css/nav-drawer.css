@@ -1,0 +1,479 @@
+/**
+ * Navigation Drawer - Mobile/Tablet Opaque Background
+ * 
+ * Locks mobile menu drawer to solid background when open.
+ * Prevents transparency flicker on hover/focus.
+ * Ensures overlay properly dims the page.
+ * 
+ * Scope: #cas-header.is-open (mobile menu open state only)
+ * Does NOT affect: Desktop navigation, other drawers/modals
+ * 
+ * Priority: Loaded AFTER all other CSS to override Elementor/Autoptimize
+ * 
+ * @package HelloElementorChild
+ * @version 1.0.0
+ */
+
+/* ========================================
+   NAV DRAWER - SOLID BACKGROUND (OPEN STATE)
+   ======================================== */
+
+/**
+ * Force solid background on mobile nav drawer when menu is open
+ * Prevents transparency flicker during hover/focus
+ * Scoped to #cas-header.is-open to avoid affecting desktop nav
+ */
+
+/* Primary nav container */
+#cas-header.is-open .nav-primary {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	background: var(--color-surface-background, #FFFFFF) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	opacity: 1 !important;
+	
+	/* Remove any backdrop filters */
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+	
+	/* Add elevation shadow */
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+	
+	/* Ensure proper stacking */
+	z-index: 1001 !important;
+	
+	/* Ensure no transparency */
+	background-image: none !important;
+	background-blend-mode: normal !important;
+}
+
+/* Inner menu containers */
+#cas-header.is-open .menu-primary,
+#cas-header.is-open .elementor-nav-menu--dropdown,
+#cas-header.is-open .elementor-nav-menu__container,
+#cas-header.is-open .elementor-nav-menu {
+	background-color: transparent !important;
+	background: transparent !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   PREVENT HOVER TRANSPARENCY
+   ======================================== */
+
+/**
+ * Lock background opacity on hover/focus
+ * Prevents drawer from going transparent when user hovers
+ */
+
+#cas-header.is-open .nav-primary:hover,
+#cas-header.is-open .nav-primary:focus-within {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	background: var(--color-surface-background, #FFFFFF) !important;
+	opacity: 1 !important;
+	
+	/* Remove backdrop filters on interactive states */
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* Inner containers on hover */
+#cas-header.is-open .menu-primary:hover,
+#cas-header.is-open .menu-primary:focus-within,
+#cas-header.is-open .elementor-nav-menu--dropdown:hover,
+#cas-header.is-open .elementor-nav-menu--dropdown:focus-within,
+#cas-header.is-open .elementor-nav-menu__container:hover,
+#cas-header.is-open .elementor-nav-menu__container:focus-within {
+	background-color: transparent !important;
+	background: transparent !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   NAVIGATION LINKS - READABLE HOVER
+   ======================================== */
+
+/**
+ * Keep nav links readable without transparent backgrounds
+ * Allows link hover states while maintaining drawer opacity
+ */
+
+#cas-header.is-open .nav-primary a,
+#cas-header.is-open .menu-primary a,
+#cas-header.is-open .elementor-nav-menu a {
+	color: var(--color-text-primary, #1E293B) !important;
+	background-color: transparent;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* Link hover states - no transparent background */
+#cas-header.is-open .nav-primary a:hover,
+#cas-header.is-open .nav-primary a:focus-visible,
+#cas-header.is-open .menu-primary a:hover,
+#cas-header.is-open .menu-primary a:focus-visible,
+#cas-header.is-open .elementor-nav-menu a:hover,
+#cas-header.is-open .elementor-nav-menu a:focus-visible {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* Active/current page links */
+#cas-header.is-open .menu-primary a[aria-current="page"],
+#cas-header.is-open .menu-primary .current-menu-item > a,
+#cas-header.is-open .menu-primary .current-menu-ancestor > a,
+#cas-header.is-open .elementor-nav-menu a[aria-current="page"],
+#cas-header.is-open .elementor-nav-menu .current-menu-item > a {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	font-weight: var(--font-weight-semibold, 600) !important;
+}
+
+/* ========================================
+   DEFENSIVE OVERRIDES - INLINE STYLES
+   ======================================== */
+
+/**
+ * Override inline transparent styles from Elementor/Autoptimize
+ * Catches style attributes that inject transparent backgrounds
+ */
+
+#cas-header.is-open .nav-primary[style*="background: transparent"],
+#cas-header.is-open .nav-primary[style*="background-color: transparent"],
+#cas-header.is-open .nav-primary[style*="opacity"],
+#cas-header.is-open .menu-primary[style*="background: transparent"],
+#cas-header.is-open .menu-primary[style*="background-color: transparent"],
+#cas-header.is-open .elementor-nav-menu[style*="background: transparent"],
+#cas-header.is-open .elementor-nav-menu[style*="background-color: transparent"] {
+	background-color: var(--color-surface-background, #FFFFFF) !important;
+	background: var(--color-surface-background, #FFFFFF) !important;
+	opacity: 1 !important;
+}
+
+/* Override backdrop-filter inline styles */
+#cas-header.is-open .nav-primary[style*="backdrop-filter"],
+#cas-header.is-open .menu-primary[style*="backdrop-filter"],
+#cas-header.is-open .elementor-nav-menu[style*="backdrop-filter"] {
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   OVERLAY/SCRIM - DIM PAGE CONTENT
+   ======================================== */
+
+/**
+ * Proper overlay dimming when mobile menu is open
+ * Prevents interaction with page content behind drawer
+ * Multiple selector variations to catch all overlay implementations
+ */
+
+/* Standard overlay selectors */
+#cas-overlay,
+.nav-overlay,
+.site-overlay,
+.mobile-menu-overlay,
+.drawer-overlay,
+#mobile-nav-overlay {
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	
+	/* Semi-transparent dark scrim */
+	background-color: rgba(2, 6, 23, 0.38) !important;
+	background: rgba(2, 6, 23, 0.38) !important;
+	
+	/* Full opacity (no transparency flicker) */
+	opacity: 1 !important;
+	
+	/* Enable click-to-close */
+	pointer-events: auto !important;
+	
+	/* Stack below drawer, above page content */
+	z-index: 1000 !important;
+	
+	/* No backdrop blur on overlay itself */
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* Hide overlay when menu is closed */
+#cas-header:not(.is-open) ~ #cas-overlay,
+#cas-header:not(.is-open) ~ .nav-overlay,
+#cas-header:not(.is-open) ~ .site-overlay,
+body:not(.mobile-menu-open) #cas-overlay,
+body:not(.mobile-menu-open) .nav-overlay,
+body:not(.mobile-menu-open) .site-overlay {
+	display: none !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* Show overlay when menu is open */
+#cas-header.is-open ~ #cas-overlay,
+#cas-header.is-open ~ .nav-overlay,
+#cas-header.is-open ~ .site-overlay,
+body.mobile-menu-open #cas-overlay,
+body.mobile-menu-open .nav-overlay,
+body.mobile-menu-open .site-overlay {
+	display: block !important;
+	opacity: 1 !important;
+	pointer-events: auto !important;
+}
+
+/* ========================================
+   ELEMENTOR WIDGET CONTAINERS
+   ======================================== */
+
+/**
+ * Prevent Elementor widgets from adding transparent overlays
+ * inside the mobile drawer
+ */
+
+#cas-header.is-open .elementor-widget-wrap,
+#cas-header.is-open .elementor-widget-container,
+#cas-header.is-open .elementor-section,
+#cas-header.is-open .elementor-column {
+	background-color: transparent !important;
+	background-image: none !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+/* ========================================
+   MENU TOGGLE BUTTON (HAMBURGER)
+   ======================================== */
+
+/**
+ * Ensure menu toggle button remains visible and clickable
+ * when drawer is open
+ */
+
+#cas-header.is-open #cas-menu-toggle,
+#cas-header.is-open .menu-toggle,
+#cas-header.is-open .mobile-menu-toggle {
+	background-color: transparent !important;
+	color: var(--color-text-primary, #1E293B) !important;
+	z-index: 1002 !important; /* Above drawer */
+	pointer-events: auto !important;
+}
+
+#cas-header.is-open #cas-menu-toggle:hover,
+#cas-header.is-open #cas-menu-toggle:focus-visible,
+#cas-header.is-open .menu-toggle:hover,
+#cas-header.is-open .menu-toggle:focus-visible {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	color: var(--color-text-primary, #1E293B) !important;
+}
+
+/* ========================================
+   SUBMENU / DROPDOWN SUPPORT
+   ======================================== */
+
+/**
+ * If drawer contains submenus, ensure they also maintain solid backgrounds
+ */
+
+#cas-header.is-open .nav-primary .sub-menu,
+#cas-header.is-open .menu-primary .sub-menu,
+#cas-header.is-open .elementor-nav-menu .sub-menu,
+#cas-header.is-open .elementor-nav-menu__dropdown {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	background: var(--color-surface-background-alt, #F8FAFC) !important;
+	opacity: 1 !important;
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}
+
+#cas-header.is-open .nav-primary .sub-menu:hover,
+#cas-header.is-open .menu-primary .sub-menu:hover {
+	background-color: var(--color-surface-background-alt, #F8FAFC) !important;
+	opacity: 1 !important;
+}
+
+/* ========================================
+   TRANSITIONS - SMOOTH OPEN/CLOSE
+   ======================================== */
+
+/**
+ * Smooth transitions when opening/closing drawer
+ * Prevents jarring background changes
+ */
+
+.nav-primary,
+.menu-primary,
+#cas-overlay,
+.nav-overlay,
+.site-overlay {
+	transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+	            opacity 200ms cubic-bezier(0.4, 0, 0.2, 1),
+	            transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Disable transitions if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.nav-primary,
+	.menu-primary,
+	#cas-overlay,
+	.nav-overlay,
+	.site-overlay {
+		transition: none !important;
+	}
+}
+
+/* ========================================
+   PREVENT BODY SCROLL WHEN DRAWER OPEN
+   ======================================== */
+
+/**
+ * Lock body scroll when mobile menu is open
+ * Prevents page scrolling behind drawer
+ */
+
+body.mobile-menu-open,
+html:has(#cas-header.is-open) body {
+	overflow: hidden !important;
+	position: fixed !important;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+/* ========================================
+   BREAKPOINT GUARDS - MOBILE/TABLET ONLY
+   ======================================== */
+
+/**
+ * Apply drawer styles ONLY on mobile/tablet breakpoints
+ * Desktop navigation remains unaffected
+ * 
+ * Adjust breakpoint to match your theme's nav-fold point
+ * (typically 1024px or 1280px)
+ */
+
+@media (min-width: 1024px) {
+	/* Reset drawer styles on desktop */
+	#cas-header.is-open .nav-primary {
+		position: static !important;
+		background-color: transparent !important;
+		background: transparent !important;
+		box-shadow: none !important;
+		z-index: auto !important;
+	}
+	
+	/* Hide overlay on desktop */
+	#cas-overlay,
+	.nav-overlay,
+	.site-overlay {
+		display: none !important;
+	}
+	
+	/* Allow body scroll on desktop */
+	body.mobile-menu-open {
+		overflow: auto !important;
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+	}
+}
+
+/* ========================================
+   ACCESSIBILITY - FOCUS MANAGEMENT
+   ======================================== */
+
+/**
+ * Ensure focus remains visible within drawer
+ * Trap focus inside drawer when open (handled by JS)
+ */
+
+#cas-header.is-open .nav-primary a:focus-visible,
+#cas-header.is-open .menu-primary a:focus-visible {
+	outline: 3px solid var(--color-text-primary, #1E293B) !important;
+	outline-offset: 2px !important;
+	z-index: 1 !important;
+}
+
+/* ========================================
+   HIGH CONTRAST MODE SUPPORT
+   ======================================== */
+
+/**
+ * Ensure drawer remains readable in forced colors mode
+ */
+
+@media (forced-colors: active) {
+	#cas-header.is-open .nav-primary {
+		border: 2px solid CanvasText !important;
+		background-color: Canvas !important;
+		color: CanvasText !important;
+	}
+	
+	#cas-overlay,
+	.nav-overlay,
+	.site-overlay {
+		background-color: Canvas !important;
+		opacity: 0.8 !important;
+	}
+}
+
+/* ========================================
+   SAFETY GUARDS - NON-NAV ELEMENTS
+   ======================================== */
+
+/**
+ * Do NOT apply these rules to:
+ * - Filter drawers (.plp-filters-drawer)
+ * - Compare drawer (.compare-drawer)
+ * - Modals (.modal, .dialog)
+ * - Other site overlays
+ * 
+ * Rules above are scoped to #cas-header.is-open
+ * so this is already safe by specificity
+ */
+
+/* ========================================
+   DEBUG - DEVELOPMENT ONLY
+   ======================================== */
+
+/**
+ * Uncomment to visualize drawer state during development
+ * Remove before production deployment
+ */
+
+/*
+#cas-header.is-open .nav-primary::before {
+	content: "NAV DRAWER OPEN - OPAQUE MODE";
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: red;
+	color: white;
+	padding: 4px 8px;
+	font-size: 10px;
+	font-weight: bold;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+#cas-overlay::before,
+.nav-overlay::before {
+	content: "OVERLAY ACTIVE";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: yellow;
+	color: black;
+	padding: 8px 16px;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 9999;
+	pointer-events: none;
+}
+*/
